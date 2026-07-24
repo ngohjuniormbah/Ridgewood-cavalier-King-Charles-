@@ -4,25 +4,31 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { PawPrint, Star, ImageIcon, LogOut, ExternalLink, Info } from "lucide-react";
-import type { SiteData } from "@/lib/types";
+import { PawPrint, Star, ImageIcon, LogOut, ExternalLink, Info, Inbox, Settings as SettingsIcon } from "lucide-react";
+import type { SiteData, Settings } from "@/lib/types";
 import PetsManager from "./PetsManager";
 import ReviewsManager from "./ReviewsManager";
 import GalleryManager from "./GalleryManager";
+import MessagesManager from "./MessagesManager";
+import SettingsManager from "./SettingsManager";
 
-type Tab = "pets" | "reviews" | "gallery";
+type Tab = "pets" | "reviews" | "gallery" | "messages" | "settings";
 
 const tabs: { id: Tab; label: string; icon: typeof PawPrint }[] = [
   { id: "pets", label: "Puppies & Pets", icon: PawPrint },
   { id: "reviews", label: "Reviews", icon: Star },
   { id: "gallery", label: "Gallery", icon: ImageIcon },
+  { id: "messages", label: "Applications", icon: Inbox },
+  { id: "settings", label: "Settings", icon: SettingsIcon },
 ];
 
 export default function AdminDashboard({
   data,
+  settings,
   persistent,
 }: {
   data: SiteData;
+  settings: Settings;
   persistent: boolean;
 }) {
   const router = useRouter();
@@ -33,10 +39,13 @@ export default function AdminDashboard({
     router.refresh();
   }
 
-  const counts = {
+  const unread = data.messages.filter((m) => !m.read).length;
+  const counts: Record<Tab, number | null> = {
     pets: data.pets.length,
     reviews: data.reviews.length,
     gallery: data.gallery.length,
+    messages: unread || data.messages.length,
+    settings: null,
   };
 
   return (
@@ -87,9 +96,11 @@ export default function AdminDashboard({
               }`}
             >
               <t.icon className="h-4 w-4" /> {t.label}
-              <span className={`ml-1 rounded-full px-2 py-0.5 text-xs ${tab === t.id ? "bg-cream/20" : "bg-charcoal/5"}`}>
-                {counts[t.id]}
-              </span>
+              {counts[t.id] !== null && (
+                <span className={`ml-1 rounded-full px-2 py-0.5 text-xs ${tab === t.id ? "bg-cream/20" : "bg-charcoal/5"}`}>
+                  {counts[t.id]}
+                </span>
+              )}
             </button>
           ))}
         </div>
@@ -97,6 +108,8 @@ export default function AdminDashboard({
         {tab === "pets" && <PetsManager pets={data.pets} />}
         {tab === "reviews" && <ReviewsManager reviews={data.reviews} />}
         {tab === "gallery" && <GalleryManager gallery={data.gallery} />}
+        {tab === "messages" && <MessagesManager messages={data.messages} />}
+        {tab === "settings" && <SettingsManager settings={settings} />}
       </div>
     </div>
   );

@@ -19,12 +19,19 @@ optional Supabase backend.
   `sitemap.xml`, `robots.txt`, and JSON-LD structured data (LocalBusiness,
   AggregateRating + Reviews, FAQ) to help rank for Cavalier breeder searches.
 - **Private admin dashboard** reachable **by URL only** at `/admin` (never
-  linked, excluded from robots & sitemap). Manage puppies, reviews and the
-  gallery, and **upload photos straight from a computer or phone** — no image
-  URLs required.
+  linked, excluded from robots & sitemap) with five sections: **Puppies**,
+  **Reviews**, **Gallery**, **Applications** (inbox) and **Settings**. Photos
+  **upload straight from a computer or phone** — no image URLs required.
+- **Adoption application form** (`/apply`): clicking an available puppy opens a
+  form asking full name, email, phone, address, whether they have children and
+  how many, whether they've raised a pet before, whether they'd like to change
+  the puppy's name, and requiring agreement to the terms and a **$250
+  reservation fee** — submissions land in the admin **Applications** inbox.
 - **Reviews** support a reviewer profile picture, an in-review photo and a link,
   a selectable source badge (**Google / Facebook / TikTok**), and carry **no
   date**, exactly as requested.
+- **Settings tab** to edit the contact email, phone, socials, announcement bar
+  and reservation fee — applied across the whole site.
 - **Supabase-ready:** runs today from bundled seed content; add your Supabase
   keys later and the same dashboard persists to the cloud with no code changes.
 
@@ -109,6 +116,11 @@ everywhere.
 
 Parent-dog photography lives in [`images/`](./images) (originals) and
 [`public/images/`](./public/images) (used by the site).
+
+**Logo:** the header uses a grey serif wordmark styled after your Ridgewood
+logo. To use the group-photo logo instead, add the image as `public/logo.png`
+and swap it into `src/components/Logo.tsx` (a one-line change, noted in the
+file).
 
 ---
 

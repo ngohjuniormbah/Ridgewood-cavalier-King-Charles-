@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   keywords: [
     "Cavalier King Charles breeder reviews",
     "Ridgewood Cavaliers reviews",
-    "trusted Cavalier breeder Ohio reviews",
+    "trusted Cavalier King Charles breeder reviews",
   ],
 };
 

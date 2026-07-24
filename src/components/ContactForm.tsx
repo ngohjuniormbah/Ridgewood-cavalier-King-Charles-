@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 import { Send, CheckCircle2 } from "lucide-react";
-import { site } from "@/lib/site";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
-export default function ContactForm() {
+export default function ContactForm({ email }: { email: string }) {
   const [status, setStatus] = useState<Status>("idle");
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -35,8 +34,8 @@ export default function ContactForm() {
         <h3 className="font-serif text-2xl text-ink">Thank you — your enquiry is on its way</h3>
         <p className="max-w-md text-charcoal/70">
           We&apos;ve received your message and will reply personally, usually within a day.
-          For anything urgent, call us on{" "}
-          <a href={site.phoneHref} className="font-medium text-chestnut">{site.phone}</a>.
+          You can also reach us any time at{" "}
+          <a href={`mailto:${email}`} className="font-medium text-chestnut">{email}</a>.
         </p>
         <button onClick={() => setStatus("idle")} className="btn-ghost mt-2">
           Send another message
@@ -85,7 +84,7 @@ export default function ContactForm() {
 
       {status === "error" && (
         <p className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-700">
-          Something went wrong. Please try again or call us on {site.phone}.
+          Something went wrong. Please try again or email us at {email}.
         </p>
       )}
 

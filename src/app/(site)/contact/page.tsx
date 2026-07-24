@@ -1,75 +1,64 @@
 import type { Metadata } from "next";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import Link from "next/link";
+import { Mail, HeartHandshake } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import ContactForm from "@/components/ContactForm";
-import { site, fullAddress } from "@/lib/site";
+import { getSettings } from "@/lib/store";
 
 export const metadata: Metadata = {
-  title: "Contact & Book a Visit",
+  title: "Contact Us",
   description:
-    "Contact Ridgewood Cavalier King Charles to enquire about a puppy, join our waiting list or book a visit. Based in Delaware, Ohio — we reply to every enquiry personally.",
+    "Contact Ridgewood Cavalier King Charles to enquire about a puppy or start an adoption application. We reply to every message personally by email.",
   alternates: { canonical: "/contact" },
   keywords: [
     "contact Cavalier King Charles breeder",
-    "book a visit Cavalier puppy Ohio",
     "Cavalier puppy enquiry",
+    "adopt Cavalier King Charles puppy",
   ],
 };
 
-const details = [
-  { icon: MapPin, label: "Visit us", value: fullAddress() },
-  { icon: Phone, label: "Call us", value: site.phone, href: site.phoneHref },
-  { icon: Mail, label: "Email us", value: site.email, href: `mailto:${site.email}` },
-  { icon: Clock, label: "Hours", value: site.hours },
-];
-
-export default function ContactPage() {
+export default async function ContactPage() {
+  const settings = await getSettings();
   return (
     <>
       <PageHeader
         eyebrow="Get In Touch"
         crumb="Contact"
         title="Let's find your perfect companion"
-        description="Whether you're ready to reserve a puppy or just have questions, we'd love to hear from you."
+        description="Whether you're ready to apply for a puppy or just have questions, we'd love to hear from you. Every message is answered personally."
       />
 
       <section className="bg-cream py-20">
         <div className="container-page grid gap-12 lg:grid-cols-[1fr_1.3fr]">
           <div className="space-y-8">
-            <div className="space-y-5">
-              {details.map((d) => (
-                <div key={d.label} className="flex items-start gap-4">
-                  <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-chestnut/10 text-chestnut">
-                    <d.icon className="h-5 w-5" />
-                  </span>
-                  <div>
-                    <p className="text-xs uppercase tracking-widest text-charcoal/50">{d.label}</p>
-                    {d.href ? (
-                      <a href={d.href} className="font-medium text-ink hover:text-chestnut">{d.value}</a>
-                    ) : (
-                      <p className="font-medium text-ink">{d.value}</p>
-                    )}
-                  </div>
-                </div>
-              ))}
+            <div className="flex items-start gap-4">
+              <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-chestnut/10 text-chestnut">
+                <Mail className="h-5 w-5" />
+              </span>
+              <div>
+                <p className="text-xs uppercase tracking-widest text-charcoal/50">Email us</p>
+                <a href={`mailto:${settings.email}`} className="break-all font-medium text-ink hover:text-chestnut">
+                  {settings.email}
+                </a>
+              </div>
             </div>
 
-            <div className="overflow-hidden rounded-3xl border border-charcoal/10 shadow-soft">
-              <iframe
-                title={`Map to ${site.name}`}
-                src={`https://www.google.com/maps?q=${encodeURIComponent(fullAddress())}&output=embed`}
-                width="100%"
-                height="280"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="block"
-              />
+            <div className="rounded-3xl border border-charcoal/10 bg-white p-7 shadow-soft">
+              <HeartHandshake className="mb-3 h-8 w-8 text-gold" />
+              <h2 className="font-serif text-xl text-ink">Ready to adopt?</h2>
+              <p className="mt-2 text-sm text-charcoal/70">
+                If you&apos;d like to reserve a puppy, the quickest way is to complete our
+                short adoption application.
+              </p>
+              <Link href="/apply" className="btn-primary mt-5">
+                Apply to Adopt
+              </Link>
             </div>
           </div>
 
           <div className="rounded-3xl border border-charcoal/10 bg-white p-7 shadow-soft sm:p-10">
-            <h2 className="mb-6 font-serif text-2xl text-ink">Send us an enquiry</h2>
-            <ContactForm />
+            <h2 className="mb-6 font-serif text-2xl text-ink">Send us a message</h2>
+            <ContactForm email={settings.email} />
           </div>
         </div>
       </section>

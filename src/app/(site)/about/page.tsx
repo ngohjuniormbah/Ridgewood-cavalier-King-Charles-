@@ -5,16 +5,15 @@ import { Heart, Home, ShieldCheck, Sparkles } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
-import { site, fullAddress } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About Ridgewood Cavalier King Charles",
   description:
-    "Ridgewood Cavalier King Charles is a small, ethical family breeder in Delaware, Ohio, raising healthy, gentle Cavalier King Charles Spaniels with health-tested parents and lifetime support.",
+    "Ridgewood Cavalier King Charles is a small, ethical family breeder raising healthy, gentle Cavalier King Charles Spaniels with health-tested parents and lifetime support.",
   alternates: { canonical: "/about" },
   keywords: [
     "about Ridgewood Cavaliers",
-    "ethical Cavalier breeder Ohio",
+    "ethical Cavalier King Charles breeder",
     "family Cavalier King Charles breeder",
   ],
 };
@@ -33,7 +32,7 @@ export default function AboutPage() {
         eyebrow="About Us"
         crumb="About"
         title="A small family breeder with a big heart"
-        description={`Based in ${fullAddress()}, we are a home breeder devoted to the Cavalier King Charles Spaniel — its health, its temperament and its future.`}
+        description="We are a small home breeder devoted to the Cavalier King Charles Spaniel — its health, its temperament and its future."
       />
 
       <section className="bg-cream py-24">
@@ -104,8 +103,8 @@ export default function AboutPage() {
             Come and meet our dogs, ask your questions, and see how our puppies are raised.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/contact" className="btn-gold">Arrange a visit</Link>
-            <a href={site.phoneHref} className="btn-outline">Call {site.phone}</a>
+            <Link href="/apply" className="btn-gold">Apply to Adopt</Link>
+            <Link href="/contact" className="btn-outline">Contact us</Link>
           </div>
         </div>
       </section>

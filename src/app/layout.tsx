@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { site } from "@/lib/site";
+import { getSettings } from "@/lib/store";
 
 const serif = Cormorant_Garamond({
   subsets: ["latin"],
@@ -65,40 +66,30 @@ export const metadata: Metadata = {
   },
 };
 
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "@id": `${site.url}/#business`,
-  name: site.name,
-  description: site.description,
-  url: site.url,
-  telephone: site.phone,
-  email: site.email,
-  image: `${site.url}/images/parent-belle-blenheim.jpg`,
-  priceRange: "$$$",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: site.address.street,
-    addressLocality: site.address.city,
-    addressRegion: site.address.state,
-    postalCode: site.address.zip,
-    addressCountry: site.address.country,
-  },
-  openingHours: "Mo-Sa 09:00-18:00",
-  areaServed: "United States",
-  knowsAbout: [
-    "Cavalier King Charles Spaniel",
-    "Ethical dog breeding",
-    "Puppy health guarantees",
-  ],
-  sameAs: [site.social.facebook, site.social.tiktok, site.social.instagram],
-};
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const settings = await getSettings();
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "PetStore",
+    "@id": `${site.url}/#business`,
+    name: site.name,
+    description: site.description,
+    url: site.url,
+    email: settings.email,
+    image: `${site.url}/images/parent-belle-blenheim.jpg`,
+    priceRange: "$$$",
+    knowsAbout: [
+      "Cavalier King Charles Spaniel",
+      "Ethical dog breeding",
+      "Puppy health guarantees",
+    ],
+    sameAs: [settings.facebook, settings.tiktok, settings.instagram].filter(Boolean),
+  };
+
   return (
     <html lang="en" className={`${serif.variable} ${sans.variable}`}>
       <body>

@@ -5,16 +5,15 @@ import PetCard from "@/components/PetCard";
 import Reveal from "@/components/Reveal";
 import { getPets } from "@/lib/store";
 import type { Pet, PetStatus } from "@/lib/types";
-import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Available Cavalier King Charles Puppies",
   description:
-    "See our current litters of Cavalier King Charles Spaniel puppies — Blenheim, Tricolour, Ruby and Black & Tan. Health-tested parents, two-year guarantee. Available, reserved and recently placed puppies from Ridgewood Cavaliers in Delaware, Ohio.",
+    "See our current litters of Cavalier King Charles Spaniel puppies — Blenheim, Tricolour, Ruby and Black & Tan. Health-tested parents, two-year guarantee. Available, reserved and recently placed puppies from Ridgewood Cavaliers.",
   alternates: { canonical: "/puppies" },
   keywords: [
     "Cavalier King Charles puppies for sale",
-    "available Cavalier puppies Ohio",
+    "available Cavalier King Charles puppies",
     "Blenheim Cavalier puppy",
     "reserved Cavalier puppies",
   ],
@@ -97,8 +96,8 @@ export default async function PuppiesPage() {
               expect. Reach out and we&apos;ll reply personally.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-4">
-              <Link href="/contact" className="btn-gold">Contact us</Link>
-              <a href={site.phoneHref} className="btn-outline">Call {site.phone}</a>
+              <Link href="/apply" className="btn-gold">Apply to Adopt</Link>
+              <Link href="/contact" className="btn-outline">Contact us</Link>
             </div>
           </div>
         </div>

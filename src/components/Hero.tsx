@@ -11,8 +11,8 @@ export default function Hero() {
       {/* Background */}
       <div className="absolute inset-0 -z-10">
         <Image
-          src="/images/parent-belle-blenheim.jpg"
-          alt="Blenheim Cavalier King Charles Spaniel"
+          src="/images/parent-winston-tricolour.jpg"
+          alt="Tricolour Cavalier King Charles Spaniel parent dog at Ridgewood"
           fill
           priority
           className="animate-kenburns object-cover object-center"

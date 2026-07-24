@@ -37,10 +37,10 @@ export default function PetCard({ pet }: { pet: Pet }) {
           {pet.description}
         </p>
         <Link
-          href={pet.status === "available" ? "/contact" : "/puppies"}
+          href={pet.status === "available" ? `/apply?puppy=${encodeURIComponent(pet.name)}` : "/puppies"}
           className="btn-ghost w-full"
         >
-          {pet.status === "available" ? "Enquire about " + pet.name : "See all puppies"}
+          {pet.status === "available" ? `Reserve ${pet.name}` : "See all puppies"}
         </Link>
       </div>
     </article>

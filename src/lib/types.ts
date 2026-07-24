@@ -53,10 +53,44 @@ export interface GalleryItem {
   order?: number;
 }
 
+export interface Message {
+  id: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  address: string;
+  puppy?: string; // which puppy they're applying for, if any
+  hasChildren: boolean;
+  childrenCount: number;
+  raisedPetBefore: boolean;
+  wantsNameChange: boolean;
+  newName?: string;
+  agreedTerms: boolean;
+  acknowledgedFee: boolean;
+  notes?: string;
+  read?: boolean;
+  createdAt: string; // received timestamp — for the admin inbox only
+  order?: number;
+}
+
+export interface Settings {
+  email: string;
+  phone: string;
+  location: string;
+  hours: string;
+  reservationFee: number;
+  facebook: string;
+  instagram: string;
+  tiktok: string;
+  announcement: string;
+}
+
+/** Collections are array-backed; settings is a singleton object. */
 export interface SiteData {
   pets: Pet[];
   reviews: Review[];
   gallery: GalleryItem[];
+  messages: Message[];
 }
 
 export type Collection = keyof SiteData;

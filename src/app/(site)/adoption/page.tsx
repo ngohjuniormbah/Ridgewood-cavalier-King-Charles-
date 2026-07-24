@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   keywords: [
     "adopt Cavalier King Charles puppy",
     "Cavalier puppy adoption process",
-    "reserve a Cavalier puppy Ohio",
+    "reserve a Cavalier King Charles puppy",
   ],
 };
 

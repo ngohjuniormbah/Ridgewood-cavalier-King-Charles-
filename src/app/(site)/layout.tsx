@@ -1,12 +1,14 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { getSettings } from "@/lib/store";
 
-export default function SiteLayout({ children }: { children: React.ReactNode }) {
+export default async function SiteLayout({ children }: { children: React.ReactNode }) {
+  const settings = await getSettings();
   return (
     <>
-      <Header />
+      <Header settings={settings} />
       <main id="main">{children}</main>
-      <Footer />
+      <Footer settings={settings} />
     </>
   );
 }

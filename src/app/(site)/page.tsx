@@ -7,6 +7,7 @@ import {
   Stethoscope,
   ArrowRight,
   PawPrint,
+  Check,
 } from "lucide-react";
 import Hero from "@/components/Hero";
 import Reveal from "@/components/Reveal";
@@ -14,7 +15,6 @@ import SectionHeading from "@/components/SectionHeading";
 import PetCard from "@/components/PetCard";
 import ReviewCard from "@/components/ReviewCard";
 import { getPets, getReviews } from "@/lib/store";
-import { site } from "@/lib/site";
 
 const values = [
   {
@@ -60,6 +60,20 @@ const colours = [
     image: "/images/parent-duchess-black-tan.jpg",
     desc: "Glossy jet-black feathering with striking, warm tan highlights.",
   },
+];
+
+const breedTraits = [
+  { label: "Gentle with children", text: "Patient, tolerant and affectionate — a natural family companion." },
+  { label: "Adaptable", text: "Equally content in an apartment or a house with a garden." },
+  { label: "Eager to please", text: "Intelligent and people-focused, which makes them a joy to train." },
+  { label: "Sociable", text: "They love other pets and thrive on being part of the family." },
+];
+
+const process = [
+  { step: "01", title: "Apply", text: "Complete our short adoption application to tell us about your home." },
+  { step: "02", title: "Chat", text: "We'll reply personally by email to answer questions and find your match." },
+  { step: "03", title: "Reserve", text: "A $250 reservation fee holds your puppy until go-home day." },
+  { step: "04", title: "Welcome home", text: "Collect your vet-checked puppy with records, contract and support." },
 ];
 
 export default async function HomePage() {
@@ -161,12 +175,105 @@ export default async function HomePage() {
               View all puppies <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-          <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
-            {showcase.map((pet, i) => (
-              <Reveal key={pet.id} delayIndex={i} className="h-full">
-                <PetCard pet={pet} />
+          {showcase.length > 0 ? (
+            <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
+              {showcase.map((pet, i) => (
+                <Reveal key={pet.id} delayIndex={i} className="h-full">
+                  <PetCard pet={pet} />
+                </Reveal>
+              ))}
+            </div>
+          ) : (
+            <Reveal className="grid items-center gap-8 overflow-hidden rounded-[2rem] border border-charcoal/10 bg-white p-8 shadow-soft sm:p-12 lg:grid-cols-2">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-3xl">
+                <Image
+                  src="/images/parent-belle-blenheim.jpg"
+                  alt="A Ridgewood Cavalier King Charles Spaniel"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+              </div>
+              <div>
+                <h3 className="heading-serif text-2xl text-ink sm:text-3xl">
+                  Our next litter is on the way
+                </h3>
+                <p className="mt-3 text-charcoal/70">
+                  We plan our litters carefully and they find homes quickly. Join our
+                  waiting list and you&apos;ll be the first to hear when new puppies are
+                  ready to reserve.
+                </p>
+                <div className="mt-6 flex flex-wrap gap-4">
+                  <Link href="/apply" className="btn-primary">Join the waiting list</Link>
+                  <Link href="/parents" className="btn-ghost">Meet the parents</Link>
+                </div>
+              </div>
+            </Reveal>
+          )}
+        </div>
+      </section>
+
+      {/* Why a Cavalier */}
+      <section className="bg-white py-24">
+        <div className="container-page grid items-center gap-14 lg:grid-cols-2">
+          <Reveal className="order-2 lg:order-1">
+            <span className="eyebrow mb-4">Why A Cavalier</span>
+            <h2 className="heading-serif text-3xl text-ink sm:text-4xl">
+              The gentlest of companions
+            </h2>
+            <p className="mt-4 text-charcoal/75">
+              Affectionate, adaptable and endlessly loving, the Cavalier King Charles
+              Spaniel is as happy on a long walk as curled up on your lap. They make
+              wonderful family dogs and devoted companions.
+            </p>
+            <ul className="mt-6 space-y-4">
+              {breedTraits.map((t) => (
+                <li key={t.label} className="flex items-start gap-3">
+                  <span className="mt-1 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-chestnut/10 text-chestnut">
+                    <Check className="h-3.5 w-3.5" />
+                  </span>
+                  <span className="text-sm text-charcoal/80">
+                    <strong className="text-ink">{t.label}.</strong> {t.text}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+          <Reveal className="order-1 grid grid-cols-2 gap-4 lg:order-2">
+            <div className="relative row-span-2 aspect-[3/4] overflow-hidden rounded-3xl shadow-soft">
+              <Image src="/images/parent-duchess-black-tan.jpg" alt="Black & Tan Cavalier King Charles Spaniel" fill className="object-cover" sizes="(max-width: 1024px) 45vw, 25vw" />
+            </div>
+            <div className="relative aspect-square overflow-hidden rounded-3xl shadow-soft">
+              <Image src="/images/parent-rufus-ruby.jpg" alt="Ruby Cavalier King Charles Spaniel" fill className="object-cover" sizes="(max-width: 1024px) 45vw, 25vw" />
+            </div>
+            <div className="relative aspect-square overflow-hidden rounded-3xl shadow-soft">
+              <Image src="/images/parent-winston-tricolour.jpg" alt="Tricolour Cavalier King Charles Spaniel" fill className="object-cover" sizes="(max-width: 1024px) 45vw, 25vw" />
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* How adoption works */}
+      <section className="bg-cream py-24">
+        <div className="container-page">
+          <SectionHeading
+            eyebrow="Simple & Personal"
+            title="How adoption works"
+            description="Four gentle steps from first hello to welcoming your puppy home."
+          />
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {process.map((step, i) => (
+              <Reveal key={step.step} delayIndex={i} className="h-full">
+                <div className="relative h-full rounded-3xl border border-charcoal/10 bg-white p-7 shadow-soft transition hover:-translate-y-1 hover:shadow-lift">
+                  <span className="font-serif text-5xl text-caramel/40">{step.step}</span>
+                  <h3 className="mt-2 font-serif text-lg text-ink">{step.title}</h3>
+                  <p className="mt-2 text-sm text-charcoal/70">{step.text}</p>
+                </div>
               </Reveal>
             ))}
+          </div>
+          <div className="mt-12 text-center">
+            <Link href="/apply" className="btn-primary">Start your application <ArrowRight className="h-4 w-4" /></Link>
           </div>
         </div>
       </section>
@@ -243,12 +350,12 @@ export default async function HomePage() {
             We reply to every enquiry personally.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/contact" className="btn-gold">
-              Book a Visit
+            <Link href="/apply" className="btn-gold">
+              Apply to Adopt
             </Link>
-            <a href={site.phoneHref} className="btn-outline">
-              Call {site.phone}
-            </a>
+            <Link href="/puppies" className="btn-outline">
+              See available puppies
+            </Link>
           </div>
         </div>
       </section>

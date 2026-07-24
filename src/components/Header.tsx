@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { MapPin, Phone, Clock, Menu, X } from "lucide-react";
+import { Mail, Menu, X } from "lucide-react";
 import Logo from "./Logo";
-import { navLinks, site, fullAddress } from "@/lib/site";
+import { navLinks } from "@/lib/site";
+import type { Settings } from "@/lib/types";
 
-export default function Header() {
+export default function Header({ settings }: { settings: Settings }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -25,18 +26,18 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50">
-      {/* Top information bar */}
-      <div className="hidden bg-ink text-cream/90 md:block">
-        <div className="container-page flex items-center justify-center gap-8 py-2 text-[0.78rem]">
-          <span className="inline-flex items-center gap-2">
-            <MapPin className="h-3.5 w-3.5 text-gold" /> {fullAddress()}
-          </span>
-          <a href={site.phoneHref} className="inline-flex items-center gap-2 link-underline">
-            <Phone className="h-3.5 w-3.5 text-gold" /> {site.phone}
+      {/* Top information bar — email only */}
+      <div className="bg-ink text-cream/90">
+        <div className="container-page flex items-center justify-center gap-6 py-2 text-[0.78rem]">
+          <a
+            href={`mailto:${settings.email}`}
+            className="inline-flex items-center gap-2 link-underline"
+          >
+            <Mail className="h-3.5 w-3.5 text-gold" /> {settings.email}
           </a>
-          <span className="inline-flex items-center gap-2">
-            <Clock className="h-3.5 w-3.5 text-gold" /> {site.hours}
-          </span>
+          {settings.announcement && (
+            <span className="hidden text-cream/60 sm:inline">· {settings.announcement}</span>
+          )}
         </div>
       </div>
 
@@ -70,8 +71,8 @@ export default function Header() {
           </ul>
 
           <div className="flex items-center gap-3">
-            <Link href="/contact" className="hidden btn-primary sm:inline-flex">
-              Contact Us
+            <Link href="/apply" className="hidden btn-primary sm:inline-flex">
+              Apply to Adopt
             </Link>
             <button
               type="button"
@@ -88,7 +89,7 @@ export default function Header() {
         {/* Mobile menu */}
         <div
           className={`overflow-hidden border-t border-charcoal/10 bg-cream transition-[max-height] duration-500 lg:hidden ${
-            open ? "max-h-[32rem]" : "max-h-0"
+            open ? "max-h-[34rem]" : "max-h-0"
           }`}
         >
           <ul className="container-page flex flex-col gap-1 py-4">
@@ -107,8 +108,8 @@ export default function Header() {
               </li>
             ))}
             <li className="mt-2">
-              <Link href="/contact" className="btn-primary w-full">
-                Contact Us
+              <Link href="/apply" className="btn-primary w-full">
+                Apply to Adopt
               </Link>
             </li>
           </ul>

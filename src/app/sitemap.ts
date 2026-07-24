@@ -7,6 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/puppies",
     "/parents",
     "/adoption",
+    "/apply",
     "/guarantee",
     "/gallery",
     "/reviews",

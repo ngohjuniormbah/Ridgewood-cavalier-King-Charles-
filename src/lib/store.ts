@@ -2,12 +2,23 @@ import "server-only";
 import fs from "fs/promises";
 import path from "path";
 import { randomUUID } from "crypto";
-import type { Collection, GalleryItem, Pet, Review, SiteData } from "./types";
+import type {
+  Collection,
+  GalleryItem,
+  Message,
+  Pet,
+  Review,
+  Settings,
+  SiteData,
+} from "./types";
 import { getSupabaseAdminClient, getSupabaseReadClient, supabaseEnabled } from "./supabase";
+import { defaultSettings } from "./site";
 
 import petsSeed from "@/data/pets.json";
 import reviewsSeed from "@/data/reviews.json";
 import gallerySeed from "@/data/gallery.json";
+import messagesSeed from "@/data/messages.json";
+import settingsSeed from "@/data/settings.json";
 
 /**
  * Content store with two backends:
@@ -24,19 +35,26 @@ const SEED: Record<Collection, unknown[]> = {
   pets: petsSeed as Pet[],
   reviews: reviewsSeed as Review[],
   gallery: gallerySeed as GalleryItem[],
+  messages: messagesSeed as Message[],
 };
 
 const FILE: Record<Collection, string> = {
   pets: "pets.json",
   reviews: "reviews.json",
   gallery: "gallery.json",
+  messages: "messages.json",
 };
 
 const TABLE: Record<Collection, string> = {
   pets: "pets",
   reviews: "reviews",
   gallery: "gallery",
+  messages: "messages",
 };
+
+const SETTINGS_FILE = "settings.json";
+const SETTINGS_TABLE = "settings";
+const SETTINGS_ID = "site";
 
 async function readFile<T>(collection: Collection): Promise<T[]> {
   try {
@@ -85,13 +103,65 @@ export async function getGallery(): Promise<GalleryItem[]> {
   return readCollection<GalleryItem>("gallery");
 }
 
+export async function getMessages(): Promise<Message[]> {
+  const messages = await readCollection<Message>("messages");
+  // Newest first for the inbox.
+  return [...messages].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
+}
+
 export async function getSiteData(): Promise<SiteData> {
-  const [pets, reviews, gallery] = await Promise.all([
+  const [pets, reviews, gallery, messages] = await Promise.all([
     getPets(),
     getReviews(),
     getGallery(),
+    getMessages(),
   ]);
-  return { pets, reviews, gallery };
+  return { pets, reviews, gallery, messages };
+}
+
+// --- Settings (singleton) --------------------------------------------------
+
+export async function getSettings(): Promise<Settings> {
+  if (supabaseEnabled) {
+    const client = getSupabaseReadClient();
+    if (client) {
+      const { data, error } = await client
+        .from(SETTINGS_TABLE)
+        .select("*")
+        .eq("id", SETTINGS_ID)
+        .maybeSingle();
+      if (!error && data) return { ...defaultSettings, ...(data as Partial<Settings>) };
+    }
+  }
+  try {
+    const raw = await fs.readFile(path.join(DATA_DIR, SETTINGS_FILE), "utf8");
+    return { ...defaultSettings, ...(JSON.parse(raw) as Partial<Settings>) };
+  } catch {
+    return { ...defaultSettings, ...(settingsSeed as Partial<Settings>) };
+  }
+}
+
+export async function updateSettings(patch: Partial<Settings>): Promise<Settings> {
+  const current = await getSettings();
+  const next: Settings = { ...current, ...patch };
+
+  const admin = getSupabaseAdminClient();
+  if (admin) {
+    const { error } = await admin
+      .from(SETTINGS_TABLE)
+      .upsert({ id: SETTINGS_ID, ...next });
+    if (error) throw new Error(error.message);
+    return next;
+  }
+
+  await fs.writeFile(
+    path.join(DATA_DIR, SETTINGS_FILE),
+    JSON.stringify(next, null, 2) + "\n",
+    "utf8",
+  );
+  return next;
 }
 
 // --- Admin write operations ------------------------------------------------
