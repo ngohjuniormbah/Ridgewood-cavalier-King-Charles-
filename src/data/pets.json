@@ -1,0 +1,52 @@
+[
+  {
+    "id": "pet-blenheim-belle-litter-01",
+    "name": "Sonnet",
+    "colour": "Blenheim",
+    "gender": "Female",
+    "birthDate": "2026-05-18",
+    "price": 3200,
+    "status": "available",
+    "description": "A gentle, sweet-natured Blenheim girl with a rich chestnut coat and the classic white blaze. Sonnet is the first to greet visitors and adores being held. Raised underfoot in our home and started on early neurological stimulation.",
+    "images": ["/images/parent-belle-blenheim.jpg"],
+    "featured": true,
+    "order": 1
+  },
+  {
+    "id": "pet-tricolour-winston-litter-02",
+    "name": "Baxter",
+    "colour": "Tricolour",
+    "gender": "Male",
+    "birthDate": "2026-05-18",
+    "price": 3200,
+    "status": "reserved",
+    "description": "A striking tricolour boy with bold markings and a playful, confident personality. Baxter loves a good game of fetch and settles quickly for a nap. Reserved for a wonderful family in Columbus.",
+    "images": ["/images/parent-winston-tricolour.jpg"],
+    "order": 2
+  },
+  {
+    "id": "pet-ruby-rufus-litter-03",
+    "name": "Marigold",
+    "colour": "Ruby",
+    "gender": "Female",
+    "birthDate": "2026-04-02",
+    "price": 3400,
+    "status": "available",
+    "description": "A radiant ruby girl with a warm, even coat and soulful eyes. Marigold is calm, affectionate and wonderful with children. Vet-checked, first vaccinations complete and ready for her forever home.",
+    "images": ["/images/parent-rufus-ruby.jpg"],
+    "featured": true,
+    "order": 3
+  },
+  {
+    "id": "pet-blacktan-duchess-litter-04",
+    "name": "Percy",
+    "colour": "Black & Tan",
+    "gender": "Male",
+    "birthDate": "2026-04-02",
+    "price": 3300,
+    "status": "sold",
+    "description": "A handsome black & tan boy with glossy feathering and rich tan points. Percy is devoted and eager to please. He has joined his forever family and is thriving.",
+    "images": ["/images/parent-duchess-black-tan.jpg"],
+    "order": 4
+  }
+]

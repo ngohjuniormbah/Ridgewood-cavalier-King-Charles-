@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-serif: "Cormorant Garamond", Georgia, serif;
+    --font-sans: "Inter", system-ui, sans-serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream text-charcoal font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    @apply bg-gold/30 text-ink;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-gold/40 bg-ink/5 px-4 py-1.5
+           text-xs font-semibold uppercase tracking-[0.2em] text-gold;
+  }
+
+  .heading-serif {
+    @apply font-serif font-semibold leading-[1.05] tracking-tight;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold
+           tracking-wide transition-all duration-300 focus:outline-none focus-visible:ring-2
+           focus-visible:ring-gold/60 focus-visible:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply btn bg-chestnut text-cream shadow-soft hover:bg-chestnut/90 hover:-translate-y-0.5 hover:shadow-lift;
+  }
+
+  .btn-gold {
+    @apply btn bg-gold text-ink shadow-soft hover:bg-gold-soft hover:-translate-y-0.5;
+  }
+
+  .btn-outline {
+    @apply btn border border-cream/40 bg-transparent text-cream hover:border-cream hover:bg-cream/10;
+  }
+
+  .btn-ghost {
+    @apply btn border border-charcoal/15 bg-white text-charcoal hover:border-chestnut/40 hover:text-chestnut;
+  }
+
+  .card {
+    @apply overflow-hidden rounded-3xl border border-charcoal/10 bg-white shadow-soft transition-all
+           duration-500;
+  }
+
+  .link-underline {
+    @apply relative after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-current
+           after:transition-all after:duration-300 hover:after:w-full;
+  }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

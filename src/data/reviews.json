@@ -1,0 +1,38 @@
+[
+  {
+    "id": "review-01",
+    "author": "Hannah & Mark Whitfield",
+    "location": "Columbus, OH",
+    "source": "google",
+    "rating": 5,
+    "text": "From our first phone call to the day we brought our Blenheim boy home, Ridgewood was warm, honest and endlessly patient. Our puppy arrived healthy, socialised and already so confident. You can tell these dogs are raised in a loving home.",
+    "avatar": "",
+    "photo": "",
+    "link": "https://www.google.com/maps",
+    "order": 1
+  },
+  {
+    "id": "review-02",
+    "author": "Priya Desai",
+    "location": "Delaware, OH",
+    "source": "facebook",
+    "rating": 5,
+    "text": "The health guarantee gave us such peace of mind, but it was the after-care that won us over. They checked in for weeks and answered every first-time question we had. Our ruby girl is the heart of our family.",
+    "avatar": "",
+    "photo": "",
+    "link": "https://www.facebook.com",
+    "order": 2
+  },
+  {
+    "id": "review-03",
+    "author": "The Alvarez Family",
+    "location": "Dublin, OH",
+    "source": "tiktok",
+    "rating": 5,
+    "text": "We watched their litters grow on TikTok for months before applying. Everything they show is exactly what you get — real, gentle, beautifully cared-for Cavaliers. Baxter has the sweetest temperament we could have hoped for.",
+    "avatar": "",
+    "photo": "",
+    "link": "https://www.tiktok.com",
+    "order": 3
+  }
+]
