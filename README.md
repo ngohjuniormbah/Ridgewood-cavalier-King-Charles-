@@ -89,30 +89,43 @@ The site is fully functional immediately, serving the bundled seed content.
 
 ---
 
-## Add Supabase (when you're ready)
+## Add Supabase (via the Vercel integration)
 
-1. Create a Supabase project.
-2. In the SQL editor, run [`supabase/schema.sql`](./supabase/schema.sql) — it
-   creates the `pets`, `reviews` and `gallery` tables and a public `media`
-   storage bucket.
-3. Add these environment variables in Vercel (and `.env.local` for local use):
+**Step 1 — Create the Supabase database from Vercel.**
+In your Vercel project, open the **Storage** tab → **Create Database** →
+**Supabase** → follow the prompts. Vercel provisions a Supabase project and
+automatically adds the connection environment variables (including
+`SUPABASE_URL`, `SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY`) to your
+project. The app reads those names automatically — nothing to copy by hand.
 
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=...
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=...
-   SUPABASE_SERVICE_ROLE_KEY=...
-   ```
+**Step 2 — Create the tables and storage bucket.**
+Open your new project at [supabase.com](https://supabase.com) → **SQL Editor**
+→ paste the contents of [`supabase/schema.sql`](./supabase/schema.sql) → **Run**.
+This creates the `pets`, `reviews`, `gallery`, `messages` and `settings` tables
+plus a public `media` storage bucket for uploads.
 
-4. Redeploy. The dashboard now reads and writes to Supabase, and uploads go to
-   Supabase Storage — no code changes needed.
+**Step 3 — Confirm the service-role key is present.**
+In Vercel → **Settings → Environment Variables**, check that
+`SUPABASE_SERVICE_ROLE_KEY` exists (the integration adds it). This is what lets
+the admin dashboard save changes and upload images. If it's missing, copy it
+from Supabase → **Project Settings → API → `service_role` secret** and add it.
+
+**Step 4 — Redeploy.**
+Vercel → **Deployments → Redeploy**. Done — the admin dashboard now reads and
+writes to Supabase, and photo uploads go to Supabase Storage. The "Preview mode"
+banner in the admin disappears once persistence is live.
+
+> Prefer to do it manually? Create a Supabase project yourself, run the schema,
+> then add `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` and
+> `SUPABASE_SERVICE_ROLE_KEY` in Vercel. The app accepts either naming.
 
 ---
 
 ## Editing business details
 
-All contact details, navigation and SEO keywords live in one file:
-[`src/lib/site.ts`](./src/lib/site.ts). Update them there and they change
-everywhere.
+Contact email, phone, socials, announcement bar and reservation fee are edited
+from the admin **Settings** tab. Brand name, navigation and SEO keyword defaults
+live in [`src/lib/site.ts`](./src/lib/site.ts).
 
 Parent-dog photography lives in [`images/`](./images) (originals) and
 [`public/images/`](./public/images) (used by the site).

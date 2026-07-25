@@ -14,7 +14,7 @@ import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import PetCard from "@/components/PetCard";
 import ReviewCard from "@/components/ReviewCard";
-import { getPets, getReviews } from "@/lib/store";
+import { getPets, getReviews, getGallery } from "@/lib/store";
 
 const values = [
   {
@@ -76,11 +76,32 @@ const process = [
   { step: "04", title: "Welcome home", text: "Collect your vet-checked puppy with records, contract and support." },
 ];
 
+const included = [
+  { title: "Health records", text: "Age-appropriate vaccinations, deworming and a licensed-vet wellness exam." },
+  { title: "Two-year guarantee", text: "A written health guarantee against hereditary conditions." },
+  { title: "Microchip & registration", text: "Microchipped with registration paperwork ready to transfer." },
+  { title: "Starter food", text: "A supply of the food your puppy is used to, to ease the transition." },
+  { title: "Comfort blanket", text: "A blanket carrying the scent of home and littermates." },
+  { title: "Lifetime support", text: "Advice and guidance from us for the whole of your dog's life." },
+];
+
+const faqs = [
+  { q: "How do I reserve a puppy?", a: "Complete the adoption application. Once we've matched you with a puppy, a $250 reservation fee holds them until go-home day and is deducted from the total price." },
+  { q: "When can a puppy come home?", a: "Puppies stay with us until they are at least eight weeks old, fully weaned, vet-checked and started on vaccinations." },
+  { q: "Are the parents health tested?", a: "Yes. Both parents are screened for heart, eye and patella conditions before we ever plan a litter." },
+  { q: "Do you offer a health guarantee?", a: "Every puppy comes with a signed contract and a genuine two-year health guarantee against hereditary conditions." },
+];
+
 export default async function HomePage() {
-  const [pets, reviews] = await Promise.all([getPets(), getReviews()]);
-  const featured = pets.filter((p) => p.featured).slice(0, 3);
-  const showcase = (featured.length ? featured : pets).slice(0, 3);
+  const [pets, reviews, gallery] = await Promise.all([
+    getPets(),
+    getReviews(),
+    getGallery(),
+  ]);
+  const available = pets.filter((p) => p.status === "available");
+  const showcase = available.slice(0, 3);
   const topReviews = reviews.slice(0, 3);
+  const galleryPreview = gallery.slice(0, 6);
 
   return (
     <>
@@ -161,15 +182,19 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Featured puppies */}
-      <section className="bg-cream py-24">
+      {/* Available pets */}
+      <section id="available" className="bg-cream py-24">
         <div className="container-page">
           <div className="mb-12 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
             <div>
-              <span className="eyebrow mb-4">Available Now</span>
+              <span className="eyebrow mb-4">Available Pets</span>
               <h2 className="heading-serif mt-2 text-3xl text-ink sm:text-4xl lg:text-[2.75rem]">
-                Meet our current puppies
+                Puppies looking for their families
               </h2>
+              <p className="mt-3 max-w-xl text-charcoal/70">
+                Our available Cavalier King Charles puppies, updated as each litter grows.
+                Click a puppy to start your adoption application.
+              </p>
             </div>
             <Link href="/puppies" className="btn-ghost shrink-0">
               View all puppies <ArrowRight className="h-4 w-4" />
@@ -212,6 +237,69 @@ export default async function HomePage() {
           )}
         </div>
       </section>
+
+      {/* What's included with every puppy */}
+      <section className="bg-white py-24">
+        <div className="container-page">
+          <SectionHeading
+            eyebrow="Your Go-Home Pack"
+            title="What comes home with every puppy"
+            description="Each Ridgewood puppy leaves fully prepared for a healthy, happy start in their new home."
+          />
+          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {included.map((item, i) => (
+              <Reveal key={item.title} delayIndex={i} className="h-full">
+                <div className="flex h-full items-start gap-4 rounded-2xl border border-charcoal/10 bg-cream p-6">
+                  <span className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-chestnut/10 text-chestnut">
+                    <Check className="h-4 w-4" />
+                  </span>
+                  <div>
+                    <h3 className="font-serif text-lg text-ink">{item.title}</h3>
+                    <p className="mt-1 text-sm text-charcoal/70">{item.text}</p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery preview strip */}
+      {galleryPreview.length > 0 && (
+        <section className="bg-ink py-24">
+          <div className="container-page">
+            <div className="mb-12 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+              <div>
+                <span className="eyebrow mb-4">A Glimpse Of Ridgewood</span>
+                <h2 className="heading-serif mt-2 text-3xl text-cream sm:text-4xl">
+                  Life with our Cavaliers
+                </h2>
+              </div>
+              <Link href="/gallery" className="btn-outline shrink-0">
+                See the full gallery <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+              {galleryPreview.map((item, i) => (
+                <Reveal key={item.id} delayIndex={i}>
+                  <div className="group relative aspect-square overflow-hidden rounded-2xl">
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      sizes="(max-width: 640px) 50vw, 33vw"
+                    />
+                    <div className="absolute inset-0 flex items-end bg-gradient-to-t from-ink/70 to-transparent p-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                      <span className="text-sm text-cream">{item.title}</span>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Why a Cavalier */}
       <section className="bg-white py-24">
@@ -335,6 +423,26 @@ export default async function HomePage() {
             <Link href="/reviews" className="btn-ghost">
               Read all reviews <ArrowRight className="h-4 w-4" />
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="bg-cream py-24">
+        <div className="container-page grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+          <SectionHeading align="left" eyebrow="Good To Know" title="Frequently asked questions" />
+          <div className="space-y-4">
+            {faqs.map((faq, i) => (
+              <Reveal key={faq.q} delayIndex={i}>
+                <details className="group rounded-2xl border border-charcoal/10 bg-white p-6">
+                  <summary className="flex cursor-pointer list-none items-center justify-between font-serif text-lg text-ink">
+                    {faq.q}
+                    <PawPrint className="h-5 w-5 text-caramel transition-transform group-open:rotate-45" />
+                  </summary>
+                  <p className="mt-3 text-sm leading-relaxed text-charcoal/70">{faq.a}</p>
+                </details>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
