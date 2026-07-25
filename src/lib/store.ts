@@ -11,7 +11,11 @@ import type {
   Settings,
   SiteData,
 } from "./types";
-import { getSupabaseAdminClient, getSupabaseReadClient, supabaseEnabled } from "./supabase";
+import {
+  getSupabaseAdminClient,
+  getSupabaseServerClient,
+  supabaseEnabled,
+} from "./supabase";
 import { defaultSettings } from "./site";
 
 import petsSeed from "@/data/pets.json";
@@ -82,7 +86,7 @@ async function readCollection<T extends { order?: number }>(
   collection: Collection,
 ): Promise<T[]> {
   if (supabaseEnabled) {
-    const client = getSupabaseReadClient();
+    const client = getSupabaseServerClient();
     if (client) {
       const { data, error } = await client.from(TABLE[collection]).select("*");
       if (!error && data) return sortByOrder(data as T[]);
@@ -125,7 +129,7 @@ export async function getSiteData(): Promise<SiteData> {
 
 export async function getSettings(): Promise<Settings> {
   if (supabaseEnabled) {
-    const client = getSupabaseReadClient();
+    const client = getSupabaseServerClient();
     if (client) {
       const { data, error } = await client
         .from(SETTINGS_TABLE)

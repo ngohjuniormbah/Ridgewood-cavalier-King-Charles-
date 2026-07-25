@@ -90,6 +90,20 @@ const included = [
   { title: "Lifetime support", text: "Advice and guidance from us for the whole of your dog's life." },
 ];
 
+const journey = [
+  { step: "1", title: "Apply online", text: "Complete our short adoption application so we can learn about your home." },
+  { step: "2", title: "We chat", text: "We reply personally by email to answer questions and find your match." },
+  { step: "3", title: "Reserve your puppy", text: "A $250 reservation fee holds your puppy until go-home day." },
+  { step: "4", title: "Get ready", text: "We'll share tips and updates as your puppy grows and prepares to travel." },
+  { step: "5", title: "Welcome home", text: "Collect your vet-checked puppy with records, contract and lifetime support." },
+];
+
+const promises = [
+  { icon: ShieldCheck, title: "Healthy puppies", text: "Health-screened parents and a two-year written guarantee, always." },
+  { icon: HeartHandshake, title: "Honest guidance", text: "We help you decide if a Cavalier is right for you — no pressure, ever." },
+  { icon: HomeIcon, title: "Support for life", text: "We're only an email away for the whole of your dog's life." },
+];
+
 const healthPoints = [
   { title: "Screened parents", text: "Heart, eye and patella checks before any litter is planned." },
   { title: "Vet-checked puppies", text: "A licensed-vet wellness exam, vaccinations and deworming." },
@@ -212,7 +226,7 @@ export default async function HomePage() {
             </Link>
           </div>
           {showcase.length > 0 ? (
-            <div className="mx-auto grid max-w-4xl grid-cols-1 gap-7 sm:grid-cols-2">
+            <div className="mx-auto grid max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2">
               {showcase.map((pet, i) => (
                 <Reveal key={pet.id} delayIndex={i} className="h-full">
                   <PetCard pet={pet} />
@@ -373,6 +387,62 @@ export default async function HomePage() {
           </div>
           <div className="mt-12 text-center">
             <Link href="/apply" className="btn-primary">Start your application <ArrowRight className="h-4 w-4" /></Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Your adoption journey — steps */}
+      <section className="bg-white py-24">
+        <div className="container-page">
+          <SectionHeading
+            eyebrow="Step By Step"
+            title="Your adoption journey"
+            description="From your first hello to the day your puppy comes home — here's exactly how it works."
+          />
+          <div className="relative mx-auto mt-14 max-w-2xl">
+            <div className="absolute left-6 top-2 bottom-2 w-px bg-caramel/30 sm:left-1/2" aria-hidden />
+            <div className="space-y-8">
+              {journey.map((step, i) => (
+                <Reveal key={step.step} delayIndex={i}>
+                  <div className={`relative flex items-start gap-5 sm:w-1/2 ${i % 2 === 1 ? "sm:ml-auto sm:flex-row" : "sm:flex-row-reverse sm:text-right"}`}>
+                    <span className="z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-chestnut font-serif text-lg text-cream shadow-soft">
+                      {step.step}
+                    </span>
+                    <div className="rounded-2xl border border-charcoal/10 bg-cream p-5 shadow-soft">
+                      <h3 className="font-serif text-lg text-ink">{step.title}</h3>
+                      <p className="mt-1 text-sm text-charcoal/70">{step.text}</p>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+          <div className="mt-12 text-center">
+            <Link href="/apply" className="btn-primary">Start your application <ArrowRight className="h-4 w-4" /></Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Our promise */}
+      <section className="bg-cream py-24">
+        <div className="container-page">
+          <SectionHeading
+            eyebrow="Our Promise"
+            title="What you can always count on"
+            description="A few things we promise every family who welcomes a Ridgewood Cavalier."
+          />
+          <div className="mt-14 grid gap-6 sm:grid-cols-3">
+            {promises.map((p, i) => (
+              <Reveal key={p.title} delayIndex={i} className="h-full">
+                <div className="card h-full p-7 text-center hover:-translate-y-1 hover:shadow-lift">
+                  <span className="mx-auto mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-chestnut/10 text-chestnut">
+                    <p.icon className="h-6 w-6" />
+                  </span>
+                  <h3 className="mb-2 font-serif text-xl text-ink">{p.title}</h3>
+                  <p className="text-sm leading-relaxed text-charcoal/70">{p.text}</p>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>

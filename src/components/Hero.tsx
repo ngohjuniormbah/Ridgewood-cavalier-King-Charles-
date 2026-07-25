@@ -26,7 +26,7 @@ export default function Hero() {
         />
       </div>
 
-      <div className="container-page flex min-h-[80vh] items-center py-24">
+      <div className="container-page flex min-h-[60vh] items-center py-20">
         <div className="max-w-2xl">
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
