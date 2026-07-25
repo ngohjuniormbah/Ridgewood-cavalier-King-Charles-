@@ -1,12 +1,26 @@
 import Link from "next/link";
+import Image from "next/image";
 
 /**
- * Wordmark styled after the Ridgewood logo — a light grey serif "Ridgewood"
- * above smaller "Cavalier King Charles" lettering. (Drop the group-photo logo
- * into /public/logo.png and swap it in here if you'd prefer the photographic
- * mark in the header.)
+ * Renders the uploaded brand logo when one is set in admin Settings; otherwise
+ * falls back to a grey serif "Ridgewood / Cavalier King Charles" wordmark.
  */
-export default function Logo({ light = false }: { light?: boolean }) {
+export default function Logo({ light = false, logo }: { light?: boolean; logo?: string }) {
+  if (logo) {
+    return (
+      <Link href="/" className="flex items-center" aria-label="Ridgewood Cavalier King Charles — home">
+        <Image
+          src={logo}
+          alt="Ridgewood Cavalier King Charles"
+          width={220}
+          height={80}
+          className="h-12 w-auto object-contain sm:h-14"
+          priority
+        />
+      </Link>
+    );
+  }
+
   return (
     <Link href="/" className="group flex flex-col leading-none" aria-label="Ridgewood Cavalier King Charles — home">
       <span

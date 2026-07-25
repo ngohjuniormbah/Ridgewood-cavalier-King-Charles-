@@ -35,9 +35,11 @@ export const defaultSettings: Settings = {
   location: "",
   hours: "",
   reservationFee: 250,
-  facebook: "https://www.facebook.com",
-  instagram: "https://www.instagram.com",
-  tiktok: "https://www.tiktok.com",
+  logo: "",
+  // Social links are empty by default — add your own from the admin Settings tab.
+  facebook: "",
+  instagram: "",
+  tiktok: "",
   announcement: "",
 };
 

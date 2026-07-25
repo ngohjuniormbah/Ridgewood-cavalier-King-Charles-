@@ -11,7 +11,7 @@ export default function Footer({ settings }: { settings: Settings }) {
     <footer className="bg-ink text-cream/80">
       <div className="container-page grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-4">
         <div className="space-y-5">
-          <Logo light />
+          <Logo light logo={settings.logo} />
           <p className="max-w-xs text-sm leading-relaxed text-cream/60">
             A small, ethical Cavalier King Charles Spaniel breeder raising healthy,
             gentle puppies in our family home.

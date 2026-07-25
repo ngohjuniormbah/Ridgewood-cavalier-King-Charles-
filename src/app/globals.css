@@ -73,17 +73,17 @@
            transition-colors hover:border-gold hover:text-gold;
   }
 
-  /* Slow-shifting gradient in the parent-dog / brown tones for the hero */
+  /* Slow-shifting deep dark-brown gradient for the hero */
   .hero-gradient {
     background: linear-gradient(
       120deg,
-      #201812,
-      #3a251a,
-      #6e3b23,
-      #b07c4f,
-      #6e3b23,
-      #2b2320,
-      #201812
+      #0d0805,
+      #1a0f08,
+      #2a180d,
+      #3a2113,
+      #2a180d,
+      #160d07,
+      #0d0805
     );
     background-size: 300% 300%;
     animation: hero-pan 22s ease infinite;

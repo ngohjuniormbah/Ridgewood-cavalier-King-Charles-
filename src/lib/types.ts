@@ -77,6 +77,7 @@ export interface Settings {
   location: string;
   hours: string;
   reservationFee: number;
+  logo: string; // uploaded brand logo (used in the header and as the favicon)
   facebook: string;
   instagram: string;
   tiktok: string;

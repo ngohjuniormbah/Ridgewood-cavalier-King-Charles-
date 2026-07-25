@@ -15,13 +15,13 @@ export default function PetCard({ pet }: { pet: Pet }) {
   const status = statusStyles[pet.status];
   return (
     <article className="card group flex h-full flex-col hover:-translate-y-1 hover:shadow-lift">
-      <div className="relative aspect-[4/5] overflow-hidden">
+      <div className="relative aspect-[4/3] overflow-hidden">
         <Image
           src={image}
           alt={`${pet.name}, a ${pet.colour} Cavalier King Charles Spaniel`}
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-105"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 360px"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 420px"
         />
       </div>
       <div className="flex flex-1 flex-col p-6">

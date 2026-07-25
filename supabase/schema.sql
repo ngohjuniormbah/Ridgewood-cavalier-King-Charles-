@@ -71,6 +71,7 @@ create table if not exists public.settings (
   location        text,
   hours           text,
   "reservationFee" integer default 250,
+  logo            text,
   facebook        text,
   instagram       text,
   tiktok          text,

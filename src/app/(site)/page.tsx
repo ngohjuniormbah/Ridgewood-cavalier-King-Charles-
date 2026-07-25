@@ -118,6 +118,7 @@ export default async function HomePage() {
   const topReviews = reviews.slice(0, 3);
   const featuredReview = reviews[0];
   const galleryPreview = gallery.slice(0, 6);
+  const hasSocials = Boolean(settings.facebook || settings.instagram || settings.tiktok);
 
   return (
     <>
@@ -211,7 +212,7 @@ export default async function HomePage() {
             </Link>
           </div>
           {showcase.length > 0 ? (
-            <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mx-auto grid max-w-4xl grid-cols-1 gap-7 sm:grid-cols-2">
               {showcase.map((pet, i) => (
                 <Reveal key={pet.id} delayIndex={i} className="h-full">
                   <PetCard pet={pet} />
@@ -514,33 +515,35 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Follow our journey */}
-      <section className="bg-white py-24">
-        <div className="container-page">
-          <SectionHeading
-            eyebrow="Stay Connected"
-            title="Follow our journey"
-            description="Watch our litters grow and see life at Ridgewood on Google, Facebook and TikTok."
-          />
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            {settings.facebook && (
-              <a href={settings.facebook} target="_blank" rel="noopener noreferrer" className="btn-ghost">
-                <Facebook className="h-4 w-4" /> Facebook
-              </a>
-            )}
-            {settings.instagram && (
-              <a href={settings.instagram} target="_blank" rel="noopener noreferrer" className="btn-ghost">
-                <Instagram className="h-4 w-4" /> Instagram
-              </a>
-            )}
-            {settings.tiktok && (
-              <a href={settings.tiktok} target="_blank" rel="noopener noreferrer" className="btn-ghost">
-                <TikTokIcon className="h-4 w-4" /> TikTok
-              </a>
-            )}
+      {/* Follow our journey — only shown once you add a social link in admin */}
+      {hasSocials && (
+        <section className="bg-white py-24">
+          <div className="container-page">
+            <SectionHeading
+              eyebrow="Stay Connected"
+              title="Follow our journey"
+              description="Watch our litters grow and see everyday life at Ridgewood."
+            />
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+              {settings.facebook && (
+                <a href={settings.facebook} target="_blank" rel="noopener noreferrer" className="btn-ghost">
+                  <Facebook className="h-4 w-4" /> Facebook
+                </a>
+              )}
+              {settings.instagram && (
+                <a href={settings.instagram} target="_blank" rel="noopener noreferrer" className="btn-ghost">
+                  <Instagram className="h-4 w-4" /> Instagram
+                </a>
+              )}
+              {settings.tiktok && (
+                <a href={settings.tiktok} target="_blank" rel="noopener noreferrer" className="btn-ghost">
+                  <TikTokIcon className="h-4 w-4" /> TikTok
+                </a>
+              )}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Stay in touch / waiting list */}
       <section className="bg-cream py-20">

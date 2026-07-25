@@ -50,7 +50,7 @@ export default function Header({ settings }: { settings: Settings }) {
         }`}
       >
         <nav className="container-page flex items-center justify-between py-4">
-          <Logo />
+          <Logo logo={settings.logo} />
 
           <ul className="hidden items-center gap-7 lg:flex">
             {navLinks.map((link) => {

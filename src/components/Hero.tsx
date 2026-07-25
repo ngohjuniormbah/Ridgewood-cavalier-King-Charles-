@@ -10,17 +10,17 @@ export default function Hero() {
       {/* Animated brown / parent-colour gradient background (no photo) */}
       <div className="absolute inset-0 -z-10">
         <div className="hero-gradient absolute inset-0" />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/40 to-ink/60" />
-        {/* soft moving glows in the parent-dog tones */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/50" />
+        {/* subtle moving warmth in deep brown tones */}
         <motion.div
           aria-hidden
-          className="absolute -left-24 top-10 h-96 w-96 rounded-full bg-caramel/25 blur-3xl"
+          className="absolute -left-24 top-10 h-96 w-96 rounded-full bg-chestnut/20 blur-3xl"
           animate={{ x: [0, 60, 0], y: [0, 30, 0] }}
           transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
           aria-hidden
-          className="absolute -right-24 bottom-0 h-[28rem] w-[28rem] rounded-full bg-chestnut/30 blur-3xl"
+          className="absolute -right-24 bottom-0 h-[28rem] w-[28rem] rounded-full bg-chestnut/15 blur-3xl"
           animate={{ x: [0, -50, 0], y: [0, -25, 0] }}
           transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
         />
@@ -64,6 +64,18 @@ export default function Hero() {
           </motion.div>
         </div>
       </div>
+
+      {/* Animated scroll cue */}
+      <motion.div
+        aria-hidden
+        className="absolute bottom-6 left-1/2 -translate-x-1/2"
+        animate={{ y: [0, 10, 0], opacity: [0.4, 1, 0.4] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <div className="flex h-9 w-6 items-start justify-center rounded-full border border-cream/40 p-1.5">
+          <div className="h-2 w-1 rounded-full bg-gold-soft" />
+        </div>
+      </motion.div>
     </section>
   );
 }

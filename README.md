@@ -130,10 +130,11 @@ live in [`src/lib/site.ts`](./src/lib/site.ts).
 Parent-dog photography lives in [`images/`](./images) (originals) and
 [`public/images/`](./public/images) (used by the site).
 
-**Logo:** the header uses a grey serif wordmark styled after your Ridgewood
-logo. To use the group-photo logo instead, add the image as `public/logo.png`
-and swap it into `src/components/Logo.tsx` (a one-line change, noted in the
-file).
+**Logo:** upload your logo image in the admin **Settings → Brand logo** tab
+(from your computer or phone) — it becomes both the header logo and the browser
+favicon automatically. If no logo is uploaded, a grey serif "Ridgewood /
+Cavalier King Charles" wordmark is used. (Uploads persist online once Supabase
+is connected.)
 
 ---
 

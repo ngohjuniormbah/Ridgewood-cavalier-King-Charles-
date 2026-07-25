@@ -18,7 +18,10 @@ const sans = Inter({
   display: "swap",
 });
 
-export const metadata: Metadata = {
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSettings();
+  const icon = settings.logo || "/icon.svg";
+  return {
   metadataBase: new URL(site.url),
   title: {
     default: `${site.name} | Cavalier King Charles Spaniel Puppies`,
@@ -60,11 +63,12 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
   icons: {
-    icon: "/icon.svg",
-    shortcut: "/icon.svg",
-    apple: "/icon.svg",
+    icon: icon,
+    shortcut: icon,
+    apple: icon,
   },
-};
+  };
+}
 
 export default async function RootLayout({
   children,

@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Save, CheckCircle2 } from "lucide-react";
 import type { Settings } from "@/lib/types";
-import { Field, TextInput, TextArea } from "./fields";
+import { Field, TextInput } from "./fields";
+import ImageUploader from "./ImageUploader";
 
 export default function SettingsManager({ settings }: { settings: Settings }) {
   const router = useRouter();
@@ -39,6 +40,16 @@ export default function SettingsManager({ settings }: { settings: Settings }) {
 
   return (
     <form onSubmit={save} className="max-w-2xl space-y-6">
+      <div className="rounded-2xl border border-charcoal/10 bg-white p-6 shadow-soft">
+        <h3 className="mb-4 font-serif text-xl text-ink">Brand logo</h3>
+        <ImageUploader
+          label="Logo (used in the header and as the favicon)"
+          value={form.logo ? [form.logo] : []}
+          onChange={(v) => set("logo", v[0] ?? "")}
+          hint="Upload your logo from your computer or phone. Leave empty to use the text logo."
+        />
+      </div>
+
       <div className="rounded-2xl border border-charcoal/10 bg-white p-6 shadow-soft">
         <h3 className="mb-4 font-serif text-xl text-ink">Contact details</h3>
         <div className="space-y-4">
