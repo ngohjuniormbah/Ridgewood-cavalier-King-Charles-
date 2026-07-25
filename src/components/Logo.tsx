@@ -12,9 +12,9 @@ export default function Logo({ light = false, logo }: { light?: boolean; logo?: 
         <Image
           src={logo}
           alt="Ridgewood Cavalier King Charles"
-          width={220}
-          height={80}
-          className="h-12 w-auto object-contain sm:h-14"
+          width={260}
+          height={190}
+          className="h-14 w-auto object-contain sm:h-16"
           priority
         />
       </Link>

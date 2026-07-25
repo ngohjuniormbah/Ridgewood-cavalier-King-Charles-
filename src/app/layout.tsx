@@ -20,7 +20,7 @@ const sans = Inter({
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSettings();
-  const icon = settings.logo || "/icon.svg";
+  const icon = settings.logo || "/icon.png";
   return {
   metadataBase: new URL(site.url),
   title: {
