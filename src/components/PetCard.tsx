@@ -24,29 +24,29 @@ export default function PetCard({ pet }: { pet: Pet }) {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 420px"
         />
       </div>
-      <div className="flex flex-1 flex-col p-6">
-        <div className="mb-2 flex items-center justify-between">
-          <h3 className="font-serif text-2xl font-semibold text-ink">{pet.name}</h3>
+      <div className="flex flex-1 flex-col p-4">
+        <div className="mb-1.5 flex items-center justify-between gap-2">
+          <h3 className="font-serif text-xl font-semibold text-ink">{pet.name}</h3>
           <span className="text-sm font-semibold text-chestnut">
             ${pet.price.toLocaleString()}
           </span>
         </div>
-        <div className="mb-4 flex items-center gap-4 text-sm">
-          <span className="inline-flex items-center gap-1.5 text-caramel">
-            <PawPrint className="h-4 w-4" /> {pet.colour}
+        <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
+          <span className="inline-flex items-center gap-1 text-caramel">
+            <PawPrint className="h-3.5 w-3.5" /> {pet.colour}
           </span>
-          <span className={`inline-flex items-center gap-1.5 font-medium ${status.text}`}>
-            <span className={`h-2 w-2 rounded-full ${status.dot}`} /> {status.label}
+          <span className={`inline-flex items-center gap-1 font-medium ${status.text}`}>
+            <span className={`h-1.5 w-1.5 rounded-full ${status.dot}`} /> {status.label}
           </span>
         </div>
         {pet.description && (
-          <p className="mb-6 flex-1 text-sm leading-relaxed text-charcoal/70 line-clamp-4">
+          <p className="mb-4 flex-1 text-[0.8rem] leading-relaxed text-charcoal/70 line-clamp-3">
             {pet.description}
           </p>
         )}
         <Link
           href={pet.status === "available" ? `/apply?puppy=${encodeURIComponent(pet.name)}` : "/puppies"}
-          className="btn-ghost mt-auto w-full"
+          className="btn-ghost mt-auto w-full !px-4 !py-2.5 text-xs"
         >
           {pet.status === "available" ? `Reserve ${pet.name}` : "See all puppies"}
         </Link>

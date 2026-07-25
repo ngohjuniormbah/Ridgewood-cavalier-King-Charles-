@@ -49,7 +49,7 @@ export default function Header({ settings }: { settings: Settings }) {
             : "border-transparent bg-cream"
         }`}
       >
-        <nav className="container-page flex items-center justify-between py-4">
+        <nav className="container-page flex items-center justify-between py-2">
           <Logo logo={settings.logo || "/logo.webp"} />
 
           <ul className="hidden items-center gap-7 lg:flex">

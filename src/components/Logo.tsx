@@ -14,7 +14,7 @@ export default function Logo({ light = false, logo }: { light?: boolean; logo?: 
           alt="Ridgewood Cavalier King Charles"
           width={260}
           height={190}
-          className="h-14 w-auto object-contain sm:h-16"
+          className="h-10 w-auto object-contain sm:h-11"
           priority
         />
       </Link>

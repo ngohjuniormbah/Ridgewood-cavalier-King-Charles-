@@ -128,7 +128,7 @@ export default async function HomePage() {
   const statusRank: Record<string, number> = { available: 0, reserved: 1, sold: 2, cancelled: 3 };
   const showcase = [...pets]
     .sort((a, b) => (statusRank[a.status] ?? 9) - (statusRank[b.status] ?? 9))
-    .slice(0, 6);
+    .slice(0, 8);
   const topReviews = reviews.slice(0, 3);
   const featuredReview = reviews[0];
   const galleryPreview = gallery.slice(0, 6);
@@ -226,7 +226,7 @@ export default async function HomePage() {
             </Link>
           </div>
           {showcase.length > 0 ? (
-            <div className="mx-auto grid max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2">
+            <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
               {showcase.map((pet, i) => (
                 <Reveal key={pet.id} delayIndex={i} className="h-full">
                   <PetCard pet={pet} />
