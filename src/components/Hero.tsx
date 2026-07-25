@@ -4,7 +4,15 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
-export default function Hero() {
+export default function Hero({
+  titleLine1,
+  titleLine2,
+  subtitle,
+}: {
+  titleLine1: string;
+  titleLine2: string;
+  subtitle: string;
+}) {
   return (
     <section className="relative isolate overflow-hidden bg-ink">
       {/* Animated brown / parent-colour gradient background (no photo) */}
@@ -34,8 +42,8 @@ export default function Hero() {
             transition={{ duration: 0.7 }}
             className="heading-serif text-5xl text-cream sm:text-6xl lg:text-7xl"
           >
-            Loved before they
-            <span className="block text-gold-soft">ever come home</span>
+            {titleLine1}
+            <span className="block text-gold-soft">{titleLine2}</span>
           </motion.h1>
 
           <motion.p
@@ -44,9 +52,7 @@ export default function Hero() {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="mt-6 max-w-xl text-lg leading-relaxed text-cream/85"
           >
-            Gentle, health-tested Cavalier King Charles Spaniels raised underfoot in
-            our family home. A signed contract, full health records and lifetime
-            breeder support come with every puppy.
+            {subtitle}
           </motion.p>
 
           <motion.div

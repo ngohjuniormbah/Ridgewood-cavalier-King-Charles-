@@ -16,7 +16,7 @@ import SectionHeading from "@/components/SectionHeading";
 import PetCard from "@/components/PetCard";
 import ReviewCard from "@/components/ReviewCard";
 import TikTokIcon from "@/components/icons/TikTokIcon";
-import { getPets, getReviews, getGallery, getSettings } from "@/lib/store";
+import { getPets, getReviews, getGallery, getSettings, getContent } from "@/lib/store";
 
 // Render on each request so puppies, gallery and reviews added in the admin
 // appear immediately (no rebuild needed).
@@ -42,29 +42,6 @@ const values = [
     icon: HeartHandshake,
     title: "Lifetime Breeder Support",
     text: "We are here for the whole journey. Call or message us any time — for the life of your dog, you are part of the Ridgewood family.",
-  },
-];
-
-const colours = [
-  {
-    name: "Blenheim",
-    image: "/images/parent-belle-blenheim.jpg",
-    desc: "Rich chestnut markings on a pearl-white coat — the breed's signature look.",
-  },
-  {
-    name: "Ruby",
-    image: "/images/parent-rufus-ruby.jpg",
-    desc: "A warm, solid mahogany-red coat and famously affectionate temperament.",
-  },
-  {
-    name: "Tricolour",
-    image: "/images/parent-winston-tricolour.jpg",
-    desc: "Bold black-and-white with tan points above the eyes and on the cheeks.",
-  },
-  {
-    name: "Black & Tan",
-    image: "/images/parent-duchess-black-tan.jpg",
-    desc: "Glossy jet-black feathering with striking, warm tan highlights.",
   },
 ];
 
@@ -118,12 +95,14 @@ const faqs = [
 ];
 
 export default async function HomePage() {
-  const [pets, reviews, gallery, settings] = await Promise.all([
+  const [pets, reviews, gallery, settings, content] = await Promise.all([
     getPets(),
     getReviews(),
     getGallery(),
     getSettings(),
+    getContent(),
   ]);
+  const storyParagraphs = content.storyBody.split(/\n\s*\n/).filter(Boolean);
   // Show puppies of any status on the home page, available ones first.
   const statusRank: Record<string, number> = { available: 0, reserved: 1, sold: 2, cancelled: 3 };
   const showcase = [...pets]
@@ -136,7 +115,11 @@ export default async function HomePage() {
 
   return (
     <>
-      <Hero />
+      <Hero
+        titleLine1={content.heroTitleLine1}
+        titleLine2={content.heroTitleLine2}
+        subtitle={content.heroSubtitle}
+      />
 
       {/* Welcome / origin teaser */}
       <section className="bg-cream py-24">
@@ -144,8 +127,8 @@ export default async function HomePage() {
           <Reveal className="relative mx-auto w-full max-w-md">
             <div className="relative aspect-square overflow-hidden rounded-[2rem] shadow-lift">
               <Image
-                src="/images/parent-rufus-ruby.jpg"
-                alt="A ruby Cavalier King Charles Spaniel at Ridgewood"
+                src={content.storyImage || "/images/parent-rufus-ruby.jpg"}
+                alt="A Cavalier King Charles Spaniel at Ridgewood"
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 420px"
@@ -154,22 +137,14 @@ export default async function HomePage() {
           </Reveal>
 
           <div>
-            <span className="eyebrow mb-4">Our Story</span>
+            <span className="eyebrow mb-4">{content.storyEyebrow}</span>
             <h2 className="heading-serif text-3xl text-ink sm:text-4xl lg:text-[2.75rem]">
-              A family, four cavaliers, and a promise
+              {content.storyTitle}
             </h2>
             <div className="mt-6 space-y-4 text-charcoal/75">
-              <p>
-                Ridgewood began at home with four beloved Cavaliers — our Blenheim
-                girl Belle, ruby Rufus, tricolour Winston and black &amp; tan Duchess.
-                They are not stock; they are family, and their gentle temperaments
-                are the foundation of every litter we raise.
-              </p>
-              <p>
-                We are a small, deliberately low-volume breeder. That means fewer
-                litters, more time with each puppy, and the ability to match every
-                family with the right companion for their home.
-              </p>
+              {storyParagraphs.map((p, i) => (
+                <p key={i}>{p}</p>
+              ))}
             </div>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link href="/parents" className="btn-primary">
@@ -493,11 +468,11 @@ export default async function HomePage() {
           <SectionHeading
             light
             eyebrow="The Four Classic Colours"
-            title="Every shade of a Cavalier's heart"
-            description="From the pearl-and-chestnut Blenheim to the deep mahogany Ruby, we raise all four recognised colours of the Cavalier King Charles Spaniel."
+            title={content.coloursTitle}
+            description={content.coloursDescription}
           />
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {colours.map((colour, i) => (
+            {content.colours.map((colour, i) => (
               <Reveal key={colour.name} delayIndex={i} className="h-full">
                 <div className="group relative h-full overflow-hidden rounded-3xl">
                   <div className="relative aspect-[3/4]">
@@ -638,12 +613,9 @@ export default async function HomePage() {
       <section className="relative overflow-hidden bg-chestnut py-20">
         <div className="container-page flex flex-col items-center gap-6 text-center">
           <h2 className="heading-serif max-w-3xl text-3xl text-cream sm:text-4xl lg:text-5xl">
-            Ready to welcome a Ridgewood Cavalier into your home?
+            {content.ctaTitle}
           </h2>
-          <p className="max-w-xl text-cream/85">
-            Tell us about your family and we&apos;ll help you find the perfect match.
-            We reply to every enquiry personally.
-          </p>
+          <p className="max-w-xl text-cream/85">{content.ctaText}</p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link href="/apply" className="btn-gold">
               Apply to Adopt

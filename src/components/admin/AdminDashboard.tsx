@@ -4,31 +4,36 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { PawPrint, Star, ImageIcon, LogOut, ExternalLink, Info, Inbox, Settings as SettingsIcon } from "lucide-react";
+import { PawPrint, Star, ImageIcon, LogOut, ExternalLink, Info, Inbox, Settings as SettingsIcon, LayoutTemplate } from "lucide-react";
 import type { SiteData, Settings } from "@/lib/types";
+import type { SiteContent } from "@/lib/content";
 import PetsManager from "./PetsManager";
 import ReviewsManager from "./ReviewsManager";
 import GalleryManager from "./GalleryManager";
 import MessagesManager from "./MessagesManager";
 import SettingsManager from "./SettingsManager";
+import ContentManager from "./ContentManager";
 
-type Tab = "pets" | "reviews" | "gallery" | "messages" | "settings";
+type Tab = "pets" | "reviews" | "gallery" | "messages" | "content" | "settings";
 
 const tabs: { id: Tab; label: string; icon: typeof PawPrint }[] = [
   { id: "pets", label: "Puppies & Pets", icon: PawPrint },
   { id: "reviews", label: "Reviews", icon: Star },
   { id: "gallery", label: "Gallery", icon: ImageIcon },
   { id: "messages", label: "Applications", icon: Inbox },
+  { id: "content", label: "Page Content", icon: LayoutTemplate },
   { id: "settings", label: "Settings", icon: SettingsIcon },
 ];
 
 export default function AdminDashboard({
   data,
   settings,
+  content,
   persistent,
 }: {
   data: SiteData;
   settings: Settings;
+  content: SiteContent;
   persistent: boolean;
 }) {
   const router = useRouter();
@@ -45,6 +50,7 @@ export default function AdminDashboard({
     reviews: data.reviews.length,
     gallery: data.gallery.length,
     messages: unread || data.messages.length,
+    content: null,
     settings: null,
   };
 
@@ -109,6 +115,7 @@ export default function AdminDashboard({
         {tab === "reviews" && <ReviewsManager reviews={data.reviews} />}
         {tab === "gallery" && <GalleryManager gallery={data.gallery} />}
         {tab === "messages" && <MessagesManager messages={data.messages} />}
+        {tab === "content" && <ContentManager content={content} />}
         {tab === "settings" && <SettingsManager settings={settings} />}
       </div>
     </div>

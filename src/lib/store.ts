@@ -17,6 +17,7 @@ import {
   supabaseEnabled,
 } from "./supabase";
 import { defaultSettings } from "./site";
+import { defaultContent, type SiteContent } from "./content";
 
 import petsSeed from "@/data/pets.json";
 import reviewsSeed from "@/data/reviews.json";
@@ -59,6 +60,10 @@ const TABLE: Record<Collection, string> = {
 const SETTINGS_FILE = "settings.json";
 const SETTINGS_TABLE = "settings";
 const SETTINGS_ID = "site";
+
+const CONTENT_FILE = "content.json";
+const CONTENT_TABLE = "content";
+const CONTENT_ID = "home";
 
 async function readFile<T>(collection: Collection): Promise<T[]> {
   try {
@@ -162,6 +167,48 @@ export async function updateSettings(patch: Partial<Settings>): Promise<Settings
 
   await fs.writeFile(
     path.join(DATA_DIR, SETTINGS_FILE),
+    JSON.stringify(next, null, 2) + "\n",
+    "utf8",
+  );
+  return next;
+}
+
+// --- Editable page content (singleton) -------------------------------------
+
+export async function getContent(): Promise<SiteContent> {
+  if (supabaseEnabled) {
+    const client = getSupabaseServerClient();
+    if (client) {
+      const { data, error } = await client
+        .from(CONTENT_TABLE)
+        .select("*")
+        .eq("id", CONTENT_ID)
+        .maybeSingle();
+      if (!error && data?.data) return { ...defaultContent, ...(data.data as Partial<SiteContent>) };
+    }
+  }
+  try {
+    const raw = await fs.readFile(path.join(DATA_DIR, CONTENT_FILE), "utf8");
+    return { ...defaultContent, ...(JSON.parse(raw) as Partial<SiteContent>) };
+  } catch {
+    return defaultContent;
+  }
+}
+
+export async function updateContent(patch: Partial<SiteContent>): Promise<SiteContent> {
+  const current = await getContent();
+  const next: SiteContent = { ...current, ...patch };
+
+  const admin = getSupabaseAdminClient();
+  if (admin) {
+    // Stored as a single JSON column so the shape can evolve freely.
+    const { error } = await admin.from(CONTENT_TABLE).upsert({ id: CONTENT_ID, data: next });
+    if (error) throw new Error(error.message);
+    return next;
+  }
+
+  await fs.writeFile(
+    path.join(DATA_DIR, CONTENT_FILE),
     JSON.stringify(next, null, 2) + "\n",
     "utf8",
   );

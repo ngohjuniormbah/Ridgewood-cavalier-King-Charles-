@@ -78,6 +78,12 @@ create table if not exists public.settings (
   announcement    text
 );
 
+-- Editable page content (single row, stored as JSON) -----------------------
+create table if not exists public.content (
+  id    text primary key default 'home',
+  data  jsonb not null default '{}'::jsonb
+);
+
 -- Row Level Security ---------------------------------------------------------
 -- Public visitors may read; all writes go through the server using the
 -- service-role key (which bypasses RLS), so no write policy is needed.
@@ -86,6 +92,7 @@ alter table public.reviews  enable row level security;
 alter table public.gallery  enable row level security;
 alter table public.messages enable row level security;
 alter table public.settings enable row level security;
+alter table public.content  enable row level security;
 
 -- Public visitors may read catalogue content and settings, but NOT messages
 -- (adoption applications stay private; only the server's service-role key,
@@ -94,6 +101,7 @@ create policy "Public read pets"     on public.pets     for select using (true);
 create policy "Public read reviews"  on public.reviews  for select using (true);
 create policy "Public read gallery"  on public.gallery  for select using (true);
 create policy "Public read settings" on public.settings for select using (true);
+create policy "Public read content"  on public.content  for select using (true);
 
 -- Storage bucket for admin uploads ------------------------------------------
 insert into storage.buckets (id, name, public)

@@ -1,5 +1,5 @@
 import { isAuthenticated } from "@/lib/auth";
-import { getSiteData, getSettings } from "@/lib/store";
+import { getSiteData, getSettings, getContent } from "@/lib/store";
 import { supabaseEnabled } from "@/lib/supabase";
 import AdminLogin from "@/components/admin/AdminLogin";
 import AdminDashboard from "@/components/admin/AdminDashboard";
@@ -13,6 +13,12 @@ export default async function AdminPage() {
     return <AdminLogin />;
   }
 
-  const [data, settings] = await Promise.all([getSiteData(), getSettings()]);
-  return <AdminDashboard data={data} settings={settings} persistent={supabaseEnabled} />;
+  const [data, settings, content] = await Promise.all([
+    getSiteData(),
+    getSettings(),
+    getContent(),
+  ]);
+  return (
+    <AdminDashboard data={data} settings={settings} content={content} persistent={supabaseEnabled} />
+  );
 }
