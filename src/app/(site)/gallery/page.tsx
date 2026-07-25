@@ -3,6 +3,8 @@ import PageHeader from "@/components/PageHeader";
 import GalleryGrid from "@/components/GalleryGrid";
 import { getGallery } from "@/lib/store";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Gallery — Our Cavaliers in Everyday Life",
   description:

@@ -9,12 +9,18 @@ import {
   PawPrint,
   Check,
 } from "lucide-react";
+import { Facebook, Instagram, Quote } from "lucide-react";
 import Hero from "@/components/Hero";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import PetCard from "@/components/PetCard";
 import ReviewCard from "@/components/ReviewCard";
-import { getPets, getReviews, getGallery } from "@/lib/store";
+import TikTokIcon from "@/components/icons/TikTokIcon";
+import { getPets, getReviews, getGallery, getSettings } from "@/lib/store";
+
+// Render on each request so puppies, gallery and reviews added in the admin
+// appear immediately (no rebuild needed).
+export const dynamic = "force-dynamic";
 
 const values = [
   {
@@ -79,10 +85,15 @@ const process = [
 const included = [
   { title: "Health records", text: "Age-appropriate vaccinations, deworming and a licensed-vet wellness exam." },
   { title: "Two-year guarantee", text: "A written health guarantee against hereditary conditions." },
-  { title: "Microchip & registration", text: "Microchipped with registration paperwork ready to transfer." },
   { title: "Starter food", text: "A supply of the food your puppy is used to, to ease the transition." },
   { title: "Comfort blanket", text: "A blanket carrying the scent of home and littermates." },
   { title: "Lifetime support", text: "Advice and guidance from us for the whole of your dog's life." },
+];
+
+const healthPoints = [
+  { title: "Screened parents", text: "Heart, eye and patella checks before any litter is planned." },
+  { title: "Vet-checked puppies", text: "A licensed-vet wellness exam, vaccinations and deworming." },
+  { title: "Two-year guarantee", text: "A written guarantee against hereditary conditions." },
 ];
 
 const faqs = [
@@ -93,14 +104,19 @@ const faqs = [
 ];
 
 export default async function HomePage() {
-  const [pets, reviews, gallery] = await Promise.all([
+  const [pets, reviews, gallery, settings] = await Promise.all([
     getPets(),
     getReviews(),
     getGallery(),
+    getSettings(),
   ]);
-  const available = pets.filter((p) => p.status === "available");
-  const showcase = available.slice(0, 3);
+  // Show puppies of any status on the home page, available ones first.
+  const statusRank: Record<string, number> = { available: 0, reserved: 1, sold: 2, cancelled: 3 };
+  const showcase = [...pets]
+    .sort((a, b) => (statusRank[a.status] ?? 9) - (statusRank[b.status] ?? 9))
+    .slice(0, 6);
   const topReviews = reviews.slice(0, 3);
+  const featuredReview = reviews[0];
   const galleryPreview = gallery.slice(0, 6);
 
   return (
@@ -110,21 +126,15 @@ export default async function HomePage() {
       {/* Welcome / origin teaser */}
       <section className="bg-cream py-24">
         <div className="container-page grid items-center gap-14 lg:grid-cols-2">
-          <Reveal className="relative">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] shadow-lift">
+          <Reveal className="relative mx-auto w-full max-w-md">
+            <div className="relative aspect-square overflow-hidden rounded-[2rem] shadow-lift">
               <Image
                 src="/images/parent-rufus-ruby.jpg"
                 alt="A ruby Cavalier King Charles Spaniel at Ridgewood"
                 fill
                 className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                sizes="(max-width: 1024px) 100vw, 420px"
               />
-            </div>
-            <div className="absolute -bottom-6 -right-4 hidden w-52 rounded-2xl bg-ink p-5 text-cream shadow-lift sm:block">
-              <p className="font-serif text-2xl text-gold-soft">Since 2010</p>
-              <p className="mt-1 text-xs text-cream/70">
-                Raising Cavaliers the honest, old-fashioned way.
-              </p>
             </div>
           </Reveal>
 
@@ -366,6 +376,46 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Health & wellbeing */}
+      <section className="bg-white py-24">
+        <div className="container-page grid items-center gap-14 lg:grid-cols-2">
+          <Reveal className="relative mx-auto w-full max-w-md">
+            <div className="relative aspect-square overflow-hidden rounded-[2rem] shadow-lift">
+              <Image
+                src="/images/parent-winston-tricolour.jpg"
+                alt="A healthy tricolour Cavalier King Charles Spaniel"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 420px"
+              />
+            </div>
+          </Reveal>
+          <div>
+            <span className="eyebrow mb-4">Health First</span>
+            <h2 className="heading-serif text-3xl text-ink sm:text-4xl">
+              A healthy start, for a long life together
+            </h2>
+            <p className="mt-4 text-charcoal/75">
+              Health is at the heart of everything we do. We breed only from
+              health-screened parents and raise every puppy with careful veterinary
+              care, so your companion begins life sound, happy and well.
+            </p>
+            <ul className="mt-6 space-y-4">
+              {healthPoints.map((p) => (
+                <li key={p.title} className="flex items-start gap-3">
+                  <span className="mt-1 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-chestnut/10 text-chestnut">
+                    <Check className="h-3.5 w-3.5" />
+                  </span>
+                  <span className="text-sm text-charcoal/80">
+                    <strong className="text-ink">{p.title}.</strong> {p.text}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
       {/* Colours */}
       <section className="bg-ink py-24">
         <div className="container-page">
@@ -427,6 +477,23 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Featured testimonial */}
+      {featuredReview && (
+        <section className="bg-chestnut/95 py-20">
+          <div className="container-page flex max-w-3xl flex-col items-center text-center">
+            <Quote className="mb-6 h-10 w-10 text-gold-soft" />
+            <Reveal>
+              <p className="font-serif text-2xl leading-relaxed text-cream sm:text-3xl">
+                &ldquo;{featuredReview.text}&rdquo;
+              </p>
+              <p className="mt-6 text-sm font-semibold uppercase tracking-widest text-gold-soft">
+                {featuredReview.author}
+              </p>
+            </Reveal>
+          </div>
+        </section>
+      )}
+
       {/* FAQ */}
       <section className="bg-cream py-24">
         <div className="container-page grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
@@ -443,6 +510,53 @@ export default async function HomePage() {
                 </details>
               </Reveal>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Follow our journey */}
+      <section className="bg-white py-24">
+        <div className="container-page">
+          <SectionHeading
+            eyebrow="Stay Connected"
+            title="Follow our journey"
+            description="Watch our litters grow and see life at Ridgewood on Google, Facebook and TikTok."
+          />
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            {settings.facebook && (
+              <a href={settings.facebook} target="_blank" rel="noopener noreferrer" className="btn-ghost">
+                <Facebook className="h-4 w-4" /> Facebook
+              </a>
+            )}
+            {settings.instagram && (
+              <a href={settings.instagram} target="_blank" rel="noopener noreferrer" className="btn-ghost">
+                <Instagram className="h-4 w-4" /> Instagram
+              </a>
+            )}
+            {settings.tiktok && (
+              <a href={settings.tiktok} target="_blank" rel="noopener noreferrer" className="btn-ghost">
+                <TikTokIcon className="h-4 w-4" /> TikTok
+              </a>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Stay in touch / waiting list */}
+      <section className="bg-cream py-20">
+        <div className="container-page">
+          <div className="flex flex-col items-center gap-6 rounded-[2rem] border border-charcoal/10 bg-white p-10 text-center shadow-soft sm:p-14">
+            <span className="eyebrow">Waiting List</span>
+            <h2 className="heading-serif max-w-2xl text-3xl text-ink sm:text-4xl">
+              Be first to hear about our next litter
+            </h2>
+            <p className="max-w-xl text-charcoal/70">
+              Our puppies find homes quickly. Join the waiting list and we&apos;ll email
+              you the moment a new litter is announced.
+            </p>
+            <Link href="/apply" className="btn-primary">
+              Join the waiting list <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </section>

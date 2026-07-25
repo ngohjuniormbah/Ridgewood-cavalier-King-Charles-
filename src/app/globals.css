@@ -72,6 +72,34 @@
     @apply flex h-10 w-10 items-center justify-center rounded-full border border-cream/20
            transition-colors hover:border-gold hover:text-gold;
   }
+
+  /* Slow-shifting gradient in the parent-dog / brown tones for the hero */
+  .hero-gradient {
+    background: linear-gradient(
+      120deg,
+      #201812,
+      #3a251a,
+      #6e3b23,
+      #b07c4f,
+      #6e3b23,
+      #2b2320,
+      #201812
+    );
+    background-size: 300% 300%;
+    animation: hero-pan 22s ease infinite;
+  }
+}
+
+@keyframes hero-pan {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Respect users who prefer reduced motion */

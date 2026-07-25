@@ -16,8 +16,6 @@ const STATUSES: PetStatus[] = ["available", "reserved", "cancelled", "sold"];
 const empty = {
   name: "",
   colour: "Blenheim" as PetColour,
-  gender: "Female" as Pet["gender"],
-  birthDate: "",
   price: 3200,
   status: "available" as PetStatus,
   description: "",
@@ -82,17 +80,6 @@ export default function PetsManager({ pets }: { pets: Pet[] }) {
               {COLOURS.map((c) => <option key={c}>{c}</option>)}
             </Select>
           </Field>
-          <Field label="Gender">
-            <Select value={form.gender} onChange={(e) => set("gender", e.target.value as Pet["gender"])}>
-              <option>Female</option>
-              <option>Male</option>
-            </Select>
-          </Field>
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          <Field label="Born">
-            <TextInput type="date" value={form.birthDate} onChange={(e) => set("birthDate", e.target.value)} />
-          </Field>
           <Field label="Price (USD)">
             <TextInput
               type="number"
@@ -144,7 +131,7 @@ export default function PetsManager({ pets }: { pets: Pet[] }) {
                 <p className="truncate font-medium text-ink">{pet.name}</p>
                 <StatusBadge status={pet.status} />
               </div>
-              <p className="text-xs text-charcoal/50">{pet.colour} · {pet.gender} · ${pet.price.toLocaleString()}</p>
+              <p className="text-xs text-charcoal/50">{pet.colour} · ${pet.price.toLocaleString()}</p>
             </div>
             <div className="hidden w-36 shrink-0 sm:block">
               <Select

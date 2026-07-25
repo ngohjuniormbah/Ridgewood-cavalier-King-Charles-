@@ -6,6 +6,8 @@ import Reveal from "@/components/Reveal";
 import { getPets } from "@/lib/store";
 import type { Pet, PetStatus } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Available Cavalier King Charles Puppies",
   description:

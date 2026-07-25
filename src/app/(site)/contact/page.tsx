@@ -5,6 +5,8 @@ import PageHeader from "@/components/PageHeader";
 import ContactForm from "@/components/ContactForm";
 import { getSettings } from "@/lib/store";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Contact Us",
   description:

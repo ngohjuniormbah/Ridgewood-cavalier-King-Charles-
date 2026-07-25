@@ -3,6 +3,8 @@ import PageHeader from "@/components/PageHeader";
 import ApplicationForm from "@/components/ApplicationForm";
 import { getSettings, getPets } from "@/lib/store";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Adoption Application",
   description:

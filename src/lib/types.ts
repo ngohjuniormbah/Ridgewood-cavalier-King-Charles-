@@ -12,8 +12,6 @@ export interface Pet {
   id: string;
   name: string;
   colour: PetColour;
-  gender: "Male" | "Female";
-  birthDate: string; // ISO date — used to compute readiness, not shown as a post date
   price: number;
   status: PetStatus;
   description: string;

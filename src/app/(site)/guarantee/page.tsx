@@ -35,12 +35,8 @@ const included = [
     text: "A clear, plain-English contract that protects you, your puppy and the future of the breed.",
   },
   {
-    title: "Microchip & Registration",
-    text: "Every puppy is microchipped and comes with its registration paperwork.",
-  },
-  {
     title: "Lifetime Breeder Support",
-    text: "Questions at 8 weeks or 8 years — we are only ever a phone call away, for life.",
+    text: "Questions at 8 weeks or 8 years — we are only ever an email away, for life.",
   },
 ];
 

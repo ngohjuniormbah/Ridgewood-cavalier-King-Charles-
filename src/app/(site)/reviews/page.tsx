@@ -10,6 +10,8 @@ import JsonLd from "@/components/JsonLd";
 import { getReviews } from "@/lib/store";
 import { site } from "@/lib/site";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Reviews — What Our Families Say",
   description:

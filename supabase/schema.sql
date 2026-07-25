@@ -9,8 +9,6 @@ create table if not exists public.pets (
   id           text primary key,
   name         text not null,
   colour       text not null,
-  gender       text not null,
-  "birthDate"  text,
   price        numeric not null default 0,
   status       text not null default 'available',
   description  text,
