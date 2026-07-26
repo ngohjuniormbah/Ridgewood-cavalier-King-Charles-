@@ -1,16 +1,33 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import JsonLd from "./JsonLd";
+import { site } from "@/lib/site";
 
 interface Props {
   eyebrow?: string;
   title: string;
   description?: string;
   crumb: string;
+  path?: string;
 }
 
-export default function PageHeader({ eyebrow, title, description, crumb }: Props) {
+export default function PageHeader({ eyebrow, title, description, crumb, path }: Props) {
+  const breadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: site.url },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: crumb,
+        ...(path ? { item: `${site.url}${path}` } : {}),
+      },
+    ],
+  };
   return (
     <section className="relative overflow-hidden bg-ink pb-16 pt-14">
+      <JsonLd data={breadcrumb} />
       <div
         className="absolute inset-0 -z-10 opacity-[0.06]"
         style={{

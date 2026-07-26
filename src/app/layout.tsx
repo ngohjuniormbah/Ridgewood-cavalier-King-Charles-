@@ -76,22 +76,45 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const settings = await getSettings();
+  const sameAs = [settings.facebook, settings.tiktok, settings.instagram].filter(Boolean);
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "PetStore",
-    "@id": `${site.url}/#business`,
-    name: site.name,
-    description: site.description,
-    url: site.url,
-    email: settings.email,
-    image: `${site.url}/images/parent-belle-blenheim.jpg`,
-    priceRange: "$$$",
-    knowsAbout: [
-      "Cavalier King Charles Spaniel",
-      "Ethical dog breeding",
-      "Puppy health guarantees",
+    "@graph": [
+      {
+        "@type": ["PetStore", "LocalBusiness"],
+        "@id": `${site.url}/#business`,
+        name: site.name,
+        alternateName: site.shortName,
+        description: site.description,
+        url: site.url,
+        email: settings.email,
+        ...(settings.phone ? { telephone: settings.phone } : {}),
+        image: `${site.url}/images/parent-belle-blenheim.jpg`,
+        logo: `${site.url}/logo.webp`,
+        priceRange: "$$$",
+        knowsAbout: [
+          "Cavalier King Charles Spaniel",
+          "Ethical dog breeding",
+          "Puppy health guarantees",
+        ],
+        makesOffer: {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Product",
+            name: "Cavalier King Charles Spaniel puppy",
+          },
+        },
+        ...(sameAs.length ? { sameAs } : {}),
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${site.url}/#website`,
+        url: site.url,
+        name: site.name,
+        publisher: { "@id": `${site.url}/#business` },
+        inLanguage: "en-US",
+      },
     ],
-    sameAs: [settings.facebook, settings.tiktok, settings.instagram].filter(Boolean),
   };
 
   return (

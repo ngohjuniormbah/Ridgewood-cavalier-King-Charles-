@@ -5,6 +5,8 @@ import PetCard from "@/components/PetCard";
 import Reveal from "@/components/Reveal";
 import { getPets } from "@/lib/store";
 import type { Pet, PetStatus } from "@/lib/types";
+import JsonLd from "@/components/JsonLd";
+import { site } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -47,11 +49,36 @@ export default async function PuppiesPage() {
   const pets = await getPets();
   const available = section(pets, "available");
 
+  const itemList = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Available Cavalier King Charles Spaniel puppies",
+    itemListElement: available.map((pet, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      item: {
+        "@type": "Product",
+        name: `${pet.name} — ${pet.colour} Cavalier King Charles Spaniel`,
+        description: pet.description,
+        image: pet.images?.[0] ? `${site.url}${pet.images[0]}` : undefined,
+        category: "Cavalier King Charles Spaniel puppy",
+        offers: {
+          "@type": "Offer",
+          price: pet.price,
+          priceCurrency: "USD",
+          availability: "https://schema.org/InStock",
+        },
+      },
+    })),
+  };
+
   return (
     <>
+      {available.length > 0 && <JsonLd data={itemList} />}
       <PageHeader
         eyebrow="Our Puppies"
         crumb="Puppies"
+        path="/puppies"
         title="Cavalier King Charles puppies raised with love"
         description="Each Ridgewood puppy is home-raised, vet-checked and started on early socialisation before ever meeting their new family."
       />

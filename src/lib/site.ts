@@ -12,7 +12,8 @@ export const site = {
   tagline: "Loved before they ever come home",
   description:
     "Ridgewood Cavalier King Charles is a small, ethical Cavalier King Charles Spaniel breeder raising healthy, well-socialised Blenheim, Tricolour, Ruby and Black & Tan puppies in our family home. Health-tested parents, a two-year health guarantee and lifetime breeder support.",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://ridgewoodcavaliers.com",
+  // Set NEXT_PUBLIC_SITE_URL in Vercel to your custom domain when you have one.
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://ridgewood-cavalier-king-charles-eta.vercel.app",
   // Primary SEO keywords the site is optimised to rank for.
   keywords: [
     "Cavalier King Charles Spaniel breeder",
@@ -36,10 +37,9 @@ export const defaultSettings: Settings = {
   hours: "",
   reservationFee: 250,
   logo: "",
-  // Social links are empty by default — add your own from the admin Settings tab.
-  facebook: "",
+  facebook: "https://www.facebook.com/share/17bRsfJh6P/?mibextid=wwXIfr",
   instagram: "",
-  tiktok: "",
+  tiktok: "https://www.tiktok.com/@ridgewoodcavalierking4?_r=1&_t=ZT-98L6IvBkspy",
   announcement: "",
 };
 

@@ -141,15 +141,32 @@ export async function getSettings(): Promise<Settings> {
         .select("*")
         .eq("id", SETTINGS_ID)
         .maybeSingle();
-      if (!error && data) return { ...defaultSettings, ...(data as Partial<Settings>) };
+      if (!error && data) return mergeSettings(data as Partial<Settings>);
     }
   }
   try {
     const raw = await fs.readFile(path.join(DATA_DIR, SETTINGS_FILE), "utf8");
-    return { ...defaultSettings, ...(JSON.parse(raw) as Partial<Settings>) };
+    return mergeSettings(JSON.parse(raw) as Partial<Settings>);
   } catch {
-    return { ...defaultSettings, ...(settingsSeed as Partial<Settings>) };
+    return mergeSettings(settingsSeed as Partial<Settings>);
   }
+}
+
+/**
+ * Merge stored settings over the defaults, but treat empty strings as "unset"
+ * so a blank stored value falls back to the default (e.g. the default social
+ * links still appear if a stored row left them empty).
+ */
+function mergeSettings(stored: Partial<Settings>): Settings {
+  const result = { ...defaultSettings };
+  (Object.keys(stored) as (keyof Settings)[]).forEach((key) => {
+    const value = stored[key];
+    if (value === undefined || value === null) return;
+    if (typeof value === "string" && value.trim() === "") return;
+    // @ts-expect-error — key/value are correlated at runtime
+    result[key] = value;
+  });
+  return result;
 }
 
 export async function updateSettings(patch: Partial<Settings>): Promise<Settings> {
