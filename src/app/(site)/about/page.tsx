@@ -5,6 +5,9 @@ import { Heart, Home, ShieldCheck, Sparkles } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
+import { getContent } from "@/lib/store";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "About Ridgewood Cavalier King Charles",
@@ -25,12 +28,15 @@ const principles = [
   { icon: Sparkles, title: "Lifetime relationship", text: "We support our families for the whole of their dog's life — no exceptions." },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const content = await getContent();
+  const aboutParagraphs = content.aboutBody.split(/\n\s*\n/).filter(Boolean);
   return (
     <>
       <PageHeader
         eyebrow="About Us"
         crumb="About"
+        path="/about"
         title="A small family breeder with a big heart"
         description="We are a small home breeder devoted to the Cavalier King Charles Spaniel — its health, its temperament and its future."
       />
@@ -39,8 +45,8 @@ export default function AboutPage() {
         <div className="container-page grid items-center gap-14 lg:grid-cols-2">
           <Reveal className="relative aspect-[4/5] overflow-hidden rounded-[2rem] shadow-lift">
             <Image
-              src="/images/parent-winston-tricolour.jpg"
-              alt="A tricolour Cavalier King Charles Spaniel at Ridgewood"
+              src={content.aboutImage || "/images/parent-winston-tricolour.jpg"}
+              alt="A Cavalier King Charles Spaniel at Ridgewood"
               fill
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -49,24 +55,12 @@ export default function AboutPage() {
           <div>
             <span className="eyebrow mb-4">Who We Are</span>
             <h2 className="heading-serif text-3xl text-ink sm:text-4xl">
-              Devoted to one wonderful breed
+              {content.aboutTitle}
             </h2>
             <div className="mt-6 space-y-4 text-charcoal/75">
-              <p>
-                We are not a large operation, and we never want to be. Ridgewood is a
-                family home where Cavalier King Charles Spaniels are loved as they were
-                always meant to be — as companions, first and always.
-              </p>
-              <p>
-                Everything we do is guided by a simple standard: would we be happy to keep
-                this puppy ourselves? If the answer is anything but a wholehearted yes, we
-                don&apos;t place it. That is our quiet promise to every family who chooses us.
-              </p>
-              <p>
-                When you bring home a Ridgewood Cavalier, you&apos;re not completing a
-                transaction — you&apos;re joining a small community of families who share a love
-                for this gentle, devoted breed.
-              </p>
+              {aboutParagraphs.map((p, i) => (
+                <p key={i}>{p}</p>
+              ))}
             </div>
           </div>
         </div>

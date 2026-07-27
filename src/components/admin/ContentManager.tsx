@@ -49,8 +49,8 @@ export default function ContentManager({ content }: { content: SiteContent }) {
   return (
     <form onSubmit={save} className="max-w-2xl space-y-6">
       <p className="text-sm text-charcoal/60">
-        Edit the wording and photos of the main home-page sections. Changes appear on the
-        site straight away.
+        Edit the wording and photos of the home page, the About page and the Guarantee
+        page. Changes appear on the site straight away.
       </p>
 
       {/* Hero */}
@@ -124,6 +124,38 @@ export default function ContentManager({ content }: { content: SiteContent }) {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* About page */}
+      <div className="rounded-2xl border border-charcoal/10 bg-white p-6 shadow-soft">
+        <h3 className="mb-4 font-serif text-xl text-ink">About page</h3>
+        <div className="space-y-4">
+          <Field label="Heading">
+            <TextInput value={form.aboutTitle} onChange={(e) => set("aboutTitle", e.target.value)} />
+          </Field>
+          <Field label="Body (leave a blank line between paragraphs)">
+            <TextArea rows={6} value={form.aboutBody} onChange={(e) => set("aboutBody", e.target.value)} />
+          </Field>
+          <ImageUploader
+            label="About photo"
+            value={form.aboutImage ? [form.aboutImage] : []}
+            onChange={(v) => set("aboutImage", v[0] ?? "")}
+            hint="Upload from your computer or phone."
+          />
+        </div>
+      </div>
+
+      {/* Guarantee page */}
+      <div className="rounded-2xl border border-charcoal/10 bg-white p-6 shadow-soft">
+        <h3 className="mb-4 font-serif text-xl text-ink">Guarantee page</h3>
+        <div className="space-y-4">
+          <Field label="Heading">
+            <TextInput value={form.guaranteeTitle} onChange={(e) => set("guaranteeTitle", e.target.value)} />
+          </Field>
+          <Field label="Intro text">
+            <TextArea rows={2} value={form.guaranteeIntro} onChange={(e) => set("guaranteeIntro", e.target.value)} />
+          </Field>
         </div>
       </div>
 

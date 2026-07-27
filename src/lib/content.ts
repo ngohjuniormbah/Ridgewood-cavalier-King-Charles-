@@ -23,6 +23,15 @@ export interface SiteContent {
 
   ctaTitle: string;
   ctaText: string;
+
+  // About page
+  aboutTitle: string;
+  aboutBody: string; // paragraphs separated by blank lines
+  aboutImage: string;
+
+  // Guarantee page
+  guaranteeTitle: string;
+  guaranteeIntro: string;
 }
 
 export const defaultContent: SiteContent = {
@@ -50,4 +59,13 @@ export const defaultContent: SiteContent = {
   ctaTitle: "Ready to welcome a Ridgewood Cavalier into your home?",
   ctaText:
     "Tell us about your family and we'll help you find the perfect match. We reply to every enquiry personally.",
+
+  aboutTitle: "Devoted to one wonderful breed",
+  aboutBody:
+    "We are not a large operation, and we never want to be. Ridgewood is a family home where Cavalier King Charles Spaniels are loved as they were always meant to be — as companions, first and always.\n\nEverything we do is guided by a simple standard: would we be happy to keep this puppy ourselves? If the answer is anything but a wholehearted yes, we don't place it. That is our quiet promise to every family who chooses us.\n\nWhen you bring home a Ridgewood Cavalier, you're not completing a transaction — you're joining a small community of families who share a love for this gentle, devoted breed.",
+  aboutImage: "/images/parent-winston-tricolour.jpg",
+
+  guaranteeTitle: "A genuine two-year health guarantee",
+  guaranteeIntro:
+    "We stand behind the health of every puppy we raise. Here is exactly what that promise means for you.",
 };

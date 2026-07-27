@@ -4,6 +4,9 @@ import { ShieldCheck } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
+import { getContent } from "@/lib/store";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Our 2-Year Health Guarantee",
@@ -47,14 +50,16 @@ const steps = [
   { step: "04", title: "Ongoing support", text: "We stay in touch and support you for the whole of your dog's life." },
 ];
 
-export default function GuaranteePage() {
+export default async function GuaranteePage() {
+  const content = await getContent();
   return (
     <>
       <PageHeader
         eyebrow="Peace Of Mind"
         crumb="Guarantee"
-        title="A genuine two-year health guarantee"
-        description="We stand behind the health of every puppy we raise. Here is exactly what that promise means for you."
+        path="/guarantee"
+        title={content.guaranteeTitle}
+        description={content.guaranteeIntro}
       />
 
       <section className="bg-cream py-24">
