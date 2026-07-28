@@ -11,7 +11,7 @@ import StatusBadge from "@/components/StatusBadge";
 import { createItem, deleteItem, updateItem } from "./api";
 
 const COLOURS: PetColour[] = ["Blenheim", "Tricolour", "Ruby", "Black & Tan"];
-const STATUSES: PetStatus[] = ["available", "reserved", "cancelled", "sold"];
+const STATUSES: PetStatus[] = ["available", "reserved", "cancelled"];
 
 type PetForm = {
   name: string;

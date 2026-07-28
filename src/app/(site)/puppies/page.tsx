@@ -59,14 +59,19 @@ export default async function PuppiesPage() {
       item: {
         "@type": "Product",
         name: `${pet.name} — ${pet.colour} Cavalier King Charles Spaniel`,
-        description: pet.description,
-        image: pet.images?.[0] ? `${site.url}${pet.images[0]}` : undefined,
+        description: pet.description || `${pet.colour} Cavalier King Charles Spaniel puppy`,
+        image: pet.images?.[0]
+          ? pet.images[0].startsWith("http")
+            ? pet.images[0]
+            : `${site.url}${pet.images[0]}`
+          : `${site.url}/images/parent-belle-blenheim.jpg`,
         category: "Cavalier King Charles Spaniel puppy",
         offers: {
           "@type": "Offer",
-          price: pet.price,
+          price: String(pet.price),
           priceCurrency: "USD",
           availability: "https://schema.org/InStock",
+          url: `${site.url}/apply?puppy=${encodeURIComponent(pet.name)}`,
         },
       },
     })),

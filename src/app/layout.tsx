@@ -100,13 +100,6 @@ export default async function RootLayout({
           "Ethical dog breeding",
           "Puppy health guarantees",
         ],
-        makesOffer: {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Product",
-            name: "Cavalier King Charles Spaniel puppy",
-          },
-        },
         ...(sameAs.length ? { sameAs } : {}),
       },
       {
