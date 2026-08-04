@@ -3,7 +3,7 @@ import { isAuthenticated } from "@/lib/auth";
 import { deleteItem, updateItem } from "@/lib/store";
 import type { Collection } from "@/lib/types";
 
-const VALID: Collection[] = ["pets", "reviews", "gallery", "messages"];
+const VALID: Collection[] = ["pets", "reviews", "gallery", "messages", "leads"];
 
 function isCollection(value: string): value is Collection {
   return (VALID as string[]).includes(value);

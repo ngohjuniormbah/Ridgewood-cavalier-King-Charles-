@@ -5,6 +5,7 @@ import { randomUUID } from "crypto";
 import type {
   Collection,
   GalleryItem,
+  Lead,
   Message,
   Pet,
   Review,
@@ -23,6 +24,7 @@ import petsSeed from "@/data/pets.json";
 import reviewsSeed from "@/data/reviews.json";
 import gallerySeed from "@/data/gallery.json";
 import messagesSeed from "@/data/messages.json";
+import leadsSeed from "@/data/leads.json";
 import settingsSeed from "@/data/settings.json";
 
 /**
@@ -41,6 +43,7 @@ const SEED: Record<Collection, unknown[]> = {
   reviews: reviewsSeed as Review[],
   gallery: gallerySeed as GalleryItem[],
   messages: messagesSeed as Message[],
+  leads: leadsSeed as Lead[],
 };
 
 const FILE: Record<Collection, string> = {
@@ -48,6 +51,7 @@ const FILE: Record<Collection, string> = {
   reviews: "reviews.json",
   gallery: "gallery.json",
   messages: "messages.json",
+  leads: "leads.json",
 };
 
 const TABLE: Record<Collection, string> = {
@@ -55,6 +59,7 @@ const TABLE: Record<Collection, string> = {
   reviews: "reviews",
   gallery: "gallery",
   messages: "messages",
+  leads: "leads",
 };
 
 const SETTINGS_FILE = "settings.json";
@@ -120,14 +125,22 @@ export async function getMessages(): Promise<Message[]> {
   );
 }
 
+export async function getLeads(): Promise<Lead[]> {
+  const leads = await readCollection<Lead>("leads");
+  return [...leads].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
+}
+
 export async function getSiteData(): Promise<SiteData> {
-  const [pets, reviews, gallery, messages] = await Promise.all([
+  const [pets, reviews, gallery, messages, leads] = await Promise.all([
     getPets(),
     getReviews(),
     getGallery(),
     getMessages(),
+    getLeads(),
   ]);
-  return { pets, reviews, gallery, messages };
+  return { pets, reviews, gallery, messages, leads };
 }
 
 // --- Settings (singleton) --------------------------------------------------

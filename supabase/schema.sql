@@ -63,6 +63,17 @@ create table if not exists public.messages (
   "order"           integer default 0
 );
 
+-- Leads / waiting-list sign-ups (from the "be first to know" popup) ---------
+create table if not exists public.leads (
+  id          text primary key,
+  name        text not null,
+  email       text not null,
+  phone       text,
+  read        boolean default false,
+  "createdAt" timestamptz not null default now(),
+  "order"     integer default 0
+);
+
 -- Editable site settings (single row) ---------------------------------------
 create table if not exists public.settings (
   id              text primary key default 'site',
@@ -91,6 +102,7 @@ alter table public.pets     enable row level security;
 alter table public.reviews  enable row level security;
 alter table public.gallery  enable row level security;
 alter table public.messages enable row level security;
+alter table public.leads    enable row level security;
 alter table public.settings enable row level security;
 alter table public.content  enable row level security;
 

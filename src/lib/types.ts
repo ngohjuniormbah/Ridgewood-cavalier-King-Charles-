@@ -84,12 +84,23 @@ export interface Settings {
   announcement: string;
 }
 
+export interface Lead {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  read?: boolean;
+  createdAt: string;
+  order?: number;
+}
+
 /** Collections are array-backed; settings is a singleton object. */
 export interface SiteData {
   pets: Pet[];
   reviews: Review[];
   gallery: GalleryItem[];
   messages: Message[];
+  leads: Lead[];
 }
 
 export type Collection = keyof SiteData;

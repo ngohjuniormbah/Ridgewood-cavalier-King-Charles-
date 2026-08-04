@@ -4,23 +4,25 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { PawPrint, Star, ImageIcon, LogOut, ExternalLink, Info, Inbox, Settings as SettingsIcon, LayoutTemplate } from "lucide-react";
+import { PawPrint, Star, ImageIcon, LogOut, ExternalLink, Info, Inbox, Settings as SettingsIcon, LayoutTemplate, UserPlus } from "lucide-react";
 import type { SiteData, Settings } from "@/lib/types";
 import type { SiteContent } from "@/lib/content";
 import PetsManager from "./PetsManager";
 import ReviewsManager from "./ReviewsManager";
 import GalleryManager from "./GalleryManager";
 import MessagesManager from "./MessagesManager";
+import LeadsManager from "./LeadsManager";
 import SettingsManager from "./SettingsManager";
 import ContentManager from "./ContentManager";
 
-type Tab = "pets" | "reviews" | "gallery" | "messages" | "content" | "settings";
+type Tab = "pets" | "reviews" | "gallery" | "messages" | "leads" | "content" | "settings";
 
 const tabs: { id: Tab; label: string; icon: typeof PawPrint }[] = [
   { id: "pets", label: "Puppies & Pets", icon: PawPrint },
   { id: "reviews", label: "Reviews", icon: Star },
   { id: "gallery", label: "Gallery", icon: ImageIcon },
   { id: "messages", label: "Applications", icon: Inbox },
+  { id: "leads", label: "Leads", icon: UserPlus },
   { id: "content", label: "Page Content", icon: LayoutTemplate },
   { id: "settings", label: "Settings", icon: SettingsIcon },
 ];
@@ -45,11 +47,13 @@ export default function AdminDashboard({
   }
 
   const unread = data.messages.filter((m) => !m.read).length;
+  const unreadLeads = data.leads.filter((l) => !l.read).length;
   const counts: Record<Tab, number | null> = {
     pets: data.pets.length,
     reviews: data.reviews.length,
     gallery: data.gallery.length,
     messages: unread || data.messages.length,
+    leads: unreadLeads || data.leads.length,
     content: null,
     settings: null,
   };
@@ -115,6 +119,7 @@ export default function AdminDashboard({
         {tab === "reviews" && <ReviewsManager reviews={data.reviews} />}
         {tab === "gallery" && <GalleryManager gallery={data.gallery} />}
         {tab === "messages" && <MessagesManager messages={data.messages} />}
+        {tab === "leads" && <LeadsManager leads={data.leads} />}
         {tab === "content" && <ContentManager content={content} />}
         {tab === "settings" && <SettingsManager settings={settings} />}
       </div>
