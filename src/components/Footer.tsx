@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, Facebook, Instagram } from "lucide-react";
+import { Mail, Phone, Facebook, Instagram } from "lucide-react";
 import Logo from "./Logo";
 import { navLinks, site } from "@/lib/site";
 import type { Settings } from "@/lib/types";
@@ -55,9 +55,15 @@ export default function Footer({ settings }: { settings: Settings }) {
               <Mail className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
               <a href={`mailto:${settings.email}`} className="break-all hover:text-cream">{settings.email}</a>
             </li>
+            {settings.phone && (
+              <li className="flex gap-3">
+                <Phone className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+                <a href={`tel:${settings.phone.replace(/[^\d+]/g, "")}`} className="hover:text-cream">{settings.phone}</a>
+              </li>
+            )}
           </ul>
           <p className="mt-5 text-xs text-cream/50">
-            All enquiries and adoption applications are answered by email.
+            Enquiries and adoption applications are answered by email or phone.
           </p>
         </div>
 

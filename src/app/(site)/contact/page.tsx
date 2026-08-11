@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Mail, HeartHandshake } from "lucide-react";
+import { Mail, Phone, HeartHandshake } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import ContactForm from "@/components/ContactForm";
 import { getSettings } from "@/lib/store";
@@ -44,6 +44,20 @@ export default async function ContactPage() {
                 </a>
               </div>
             </div>
+
+            {settings.phone && (
+              <div className="flex items-start gap-4">
+                <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-chestnut/10 text-chestnut">
+                  <Phone className="h-5 w-5" />
+                </span>
+                <div>
+                  <p className="text-xs uppercase tracking-widest text-charcoal/50">Call or text</p>
+                  <a href={`tel:${settings.phone.replace(/[^\d+]/g, "")}`} className="font-medium text-ink hover:text-chestnut">
+                    {settings.phone}
+                  </a>
+                </div>
+              </div>
+            )}
 
             <div className="rounded-3xl border border-charcoal/10 bg-white p-7 shadow-soft">
               <HeartHandshake className="mb-3 h-8 w-8 text-gold" />
