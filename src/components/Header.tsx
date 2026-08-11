@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Mail, Menu, X } from "lucide-react";
+import { Mail, Phone, Menu, X } from "lucide-react";
 import Logo from "./Logo";
 import { navLinks } from "@/lib/site";
 import type { Settings } from "@/lib/types";
@@ -26,15 +26,23 @@ export default function Header({ settings }: { settings: Settings }) {
 
   return (
     <header className="sticky top-0 z-50">
-      {/* Top information bar — email only */}
+      {/* Top information bar — email and phone */}
       <div className="bg-ink text-cream/90">
-        <div className="container-page flex items-center justify-center gap-6 py-2 text-[0.78rem]">
+        <div className="container-page flex flex-wrap items-center justify-center gap-x-6 gap-y-1 py-2 text-[0.78rem]">
           <a
             href={`mailto:${settings.email}`}
             className="inline-flex items-center gap-2 link-underline"
           >
             <Mail className="h-3.5 w-3.5 text-gold" /> {settings.email}
           </a>
+          {settings.phone && (
+            <a
+              href={`tel:${settings.phone.replace(/[^\d+]/g, "")}`}
+              className="inline-flex items-center gap-2 link-underline"
+            >
+              <Phone className="h-3.5 w-3.5 text-gold" /> {settings.phone}
+            </a>
+          )}
           {settings.announcement && (
             <span className="hidden text-cream/60 sm:inline">· {settings.announcement}</span>
           )}
