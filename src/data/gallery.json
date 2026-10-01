@@ -1,0 +1,34 @@
+[
+  {
+    "id": "gallery-01",
+    "title": "Belle — Blenheim Dam",
+    "caption": "Our foundation Blenheim girl, where the Ridgewood story began.",
+    "image": "/images/parent-belle-blenheim.jpg",
+    "category": "Parents",
+    "order": 1
+  },
+  {
+    "id": "gallery-02",
+    "title": "Rufus — Ruby Sire",
+    "caption": "A calm, affectionate ruby with an exceptional temperament.",
+    "image": "/images/parent-rufus-ruby.jpg",
+    "category": "Parents",
+    "order": 2
+  },
+  {
+    "id": "gallery-03",
+    "title": "Winston — Tricolour Sire",
+    "caption": "Bold markings and a playful heart.",
+    "image": "/images/parent-winston-tricolour.jpg",
+    "category": "Parents",
+    "order": 3
+  },
+  {
+    "id": "gallery-04",
+    "title": "Duchess — Black & Tan Dam",
+    "caption": "Glossy feathering and rich tan points.",
+    "image": "/images/parent-duchess-black-tan.jpg",
+    "category": "Parents",
+    "order": 4
+  }
+]

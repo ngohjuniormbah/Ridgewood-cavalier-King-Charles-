@@ -1,0 +1,631 @@
+import Link from "next/link";
+import Image from "next/image";
+import {
+  ShieldCheck,
+  Home as HomeIcon,
+  HeartHandshake,
+  Stethoscope,
+  ArrowRight,
+  PawPrint,
+  Check,
+} from "lucide-react";
+import { Facebook, Instagram, Quote } from "lucide-react";
+import Hero from "@/components/Hero";
+import Reveal from "@/components/Reveal";
+import SectionHeading from "@/components/SectionHeading";
+import PetCard from "@/components/PetCard";
+import ReviewCard from "@/components/ReviewCard";
+import TikTokIcon from "@/components/icons/TikTokIcon";
+import { getPets, getReviews, getGallery, getSettings, getContent } from "@/lib/store";
+
+// Render on each request so puppies, gallery and reviews added in the admin
+// appear immediately (no rebuild needed).
+export const dynamic = "force-dynamic";
+
+const values = [
+  {
+    icon: ShieldCheck,
+    title: "2-Year Health Guarantee",
+    text: "Every puppy leaves with a signed contract, full veterinary records and a genuine two-year guarantee against hereditary conditions.",
+  },
+  {
+    icon: HomeIcon,
+    title: "Raised In Our Home",
+    text: "Our puppies are never kennelled. They grow up underfoot — socialised to family life, children and the everyday sounds of a busy home.",
+  },
+  {
+    icon: Stethoscope,
+    title: "Health-Tested Parents",
+    text: "Both sires and dams are screened for heart, eye and hip conditions so we can breed for soundness and longevity, not just looks.",
+  },
+  {
+    icon: HeartHandshake,
+    title: "Lifetime Breeder Support",
+    text: "We are here for the whole journey. Call or message us any time — for the life of your dog, you are part of the Ridgewood family.",
+  },
+];
+
+const breedTraits = [
+  { label: "Gentle with children", text: "Patient, tolerant and affectionate — a natural family companion." },
+  { label: "Adaptable", text: "Equally content in an apartment or a house with a garden." },
+  { label: "Eager to please", text: "Intelligent and people-focused, which makes them a joy to train." },
+  { label: "Sociable", text: "They love other pets and thrive on being part of the family." },
+];
+
+const process = [
+  { step: "01", title: "Apply", text: "Complete our short adoption application to tell us about your home." },
+  { step: "02", title: "Chat", text: "We'll reply personally by email to answer questions and find your match." },
+  { step: "03", title: "Reserve", text: "A $250 reservation fee holds your puppy until go-home day." },
+  { step: "04", title: "Welcome home", text: "Collect your vet-checked puppy with records, contract and support." },
+];
+
+const included = [
+  { title: "Health records", text: "Age-appropriate vaccinations, deworming and a licensed-vet wellness exam." },
+  { title: "Two-year guarantee", text: "A written health guarantee against hereditary conditions." },
+  { title: "Starter food", text: "A supply of the food your puppy is used to, to ease the transition." },
+  { title: "Comfort blanket", text: "A blanket carrying the scent of home and littermates." },
+  { title: "Lifetime support", text: "Advice and guidance from us for the whole of your dog's life." },
+];
+
+const journey = [
+  { step: "1", title: "Apply online", text: "Complete our short adoption application so we can learn about your home." },
+  { step: "2", title: "We chat", text: "We reply personally by email to answer questions and find your match." },
+  { step: "3", title: "Reserve your puppy", text: "A $250 reservation fee holds your puppy until go-home day." },
+  { step: "4", title: "Get ready", text: "We'll share tips and updates as your puppy grows and prepares to travel." },
+  { step: "5", title: "Welcome home", text: "Collect your vet-checked puppy with records, contract and lifetime support." },
+];
+
+const promises = [
+  { icon: ShieldCheck, title: "Healthy puppies", text: "Health-screened parents and a two-year written guarantee, always." },
+  { icon: HeartHandshake, title: "Honest guidance", text: "We help you decide if a Cavalier is right for you — no pressure, ever." },
+  { icon: HomeIcon, title: "Support for life", text: "We're only an email away for the whole of your dog's life." },
+];
+
+const healthPoints = [
+  { title: "Screened parents", text: "Heart, eye and patella checks before any litter is planned." },
+  { title: "Vet-checked puppies", text: "A licensed-vet wellness exam, vaccinations and deworming." },
+  { title: "Two-year guarantee", text: "A written guarantee against hereditary conditions." },
+];
+
+const faqs = [
+  { q: "How do I reserve a puppy?", a: "Complete the adoption application. Once we've matched you with a puppy, a $250 reservation fee holds them until go-home day and is deducted from the total price." },
+  { q: "When can a puppy come home?", a: "Puppies stay with us until they are at least eight weeks old, fully weaned, vet-checked and started on vaccinations." },
+  { q: "Are the parents health tested?", a: "Yes. Both parents are screened for heart, eye and patella conditions before we ever plan a litter." },
+  { q: "Do you offer a health guarantee?", a: "Every puppy comes with a signed contract and a genuine two-year health guarantee against hereditary conditions." },
+];
+
+export default async function HomePage() {
+  const [pets, reviews, gallery, settings, content] = await Promise.all([
+    getPets(),
+    getReviews(),
+    getGallery(),
+    getSettings(),
+    getContent(),
+  ]);
+  const storyParagraphs = content.storyBody.split(/\n\s*\n/).filter(Boolean);
+  // Show puppies of any status on the home page, available ones first.
+  const statusRank: Record<string, number> = { available: 0, reserved: 1, adopted: 2, cancelled: 3 };
+  const showcase = [...pets]
+    .sort((a, b) => (statusRank[a.status] ?? 9) - (statusRank[b.status] ?? 9))
+    .slice(0, 8);
+  const topReviews = reviews.slice(0, 3);
+  const featuredReview = reviews[0];
+  const galleryPreview = gallery.slice(0, 6);
+  const hasSocials = Boolean(settings.facebook || settings.instagram || settings.tiktok);
+
+  return (
+    <>
+      <Hero
+        titleLine1={content.heroTitleLine1}
+        titleLine2={content.heroTitleLine2}
+        subtitle={content.heroSubtitle}
+      />
+
+      {/* Welcome / origin teaser */}
+      <section className="bg-cream py-24">
+        <div className="container-page grid items-center gap-14 lg:grid-cols-2">
+          <Reveal className="relative mx-auto w-full max-w-md">
+            <div className="relative aspect-square overflow-hidden rounded-[2rem] shadow-lift">
+              <Image
+                src={content.storyImage || "/images/parent-rufus-ruby.jpg"}
+                alt="A Cavalier King Charles Spaniel at Ridgewood"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 420px"
+              />
+            </div>
+          </Reveal>
+
+          <div>
+            <span className="eyebrow mb-4">{content.storyEyebrow}</span>
+            <h2 className="heading-serif text-3xl text-ink sm:text-4xl lg:text-[2.75rem]">
+              {content.storyTitle}
+            </h2>
+            <div className="mt-6 space-y-4 text-charcoal/75">
+              {storyParagraphs.map((p, i) => (
+                <p key={i}>{p}</p>
+              ))}
+            </div>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <Link href="/parents" className="btn-primary">
+                Meet the parents <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href="/about" className="btn-ghost">
+                About Ridgewood
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Values */}
+      <section className="bg-white py-24">
+        <div className="container-page">
+          <SectionHeading
+            eyebrow="Why Families Choose Us"
+            title="Bred for health, raised for love"
+            description="Everything we do is built around producing sound, happy Cavaliers and supporting the families who welcome them."
+          />
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {values.map((value, i) => (
+              <Reveal key={value.title} delayIndex={i} className="h-full">
+                <div className="card h-full p-7 hover:-translate-y-1 hover:shadow-lift">
+                  <span className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-chestnut/10 text-chestnut">
+                    <value.icon className="h-6 w-6" />
+                  </span>
+                  <h3 className="mb-2 font-serif text-xl text-ink">{value.title}</h3>
+                  <p className="text-sm leading-relaxed text-charcoal/70">{value.text}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Available pets */}
+      <section id="puppies" className="bg-cream py-24">
+        <div className="container-page">
+          <div className="mb-12 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+            <div>
+              <span className="eyebrow mb-4">Our Puppies</span>
+              <h2 className="heading-serif mt-2 text-3xl text-ink sm:text-4xl lg:text-[2.75rem]">
+                Puppies looking for their families
+              </h2>
+              <p className="mt-3 max-w-xl text-charcoal/70">
+                Our available Cavalier King Charles puppies, updated as each litter grows.
+                Click a puppy to start your adoption application.
+              </p>
+            </div>
+            <Link href="/our-nursery" className="btn-ghost shrink-0">
+              Explore our nursery <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          {showcase.length > 0 ? (
+            <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
+              {showcase.map((pet, i) => (
+                <Reveal key={pet.id} delayIndex={i} className="h-full">
+                  <PetCard pet={pet} />
+                </Reveal>
+              ))}
+            </div>
+          ) : (
+            <Reveal className="grid items-center gap-8 overflow-hidden rounded-[2rem] border border-charcoal/10 bg-white p-8 shadow-soft sm:p-12 lg:grid-cols-2">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-3xl">
+                <Image
+                  src="/images/parent-belle-blenheim.jpg"
+                  alt="A Ridgewood Cavalier King Charles Spaniel"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+              </div>
+              <div>
+                <h3 className="heading-serif text-2xl text-ink sm:text-3xl">
+                  Our next litter is on the way
+                </h3>
+                <p className="mt-3 text-charcoal/70">
+                  We plan our litters carefully and they find homes quickly. Join our
+                  waiting list and you&apos;ll be the first to hear when new puppies are
+                  ready to reserve.
+                </p>
+                <div className="mt-6 flex flex-wrap gap-4">
+                  <Link href="/apply" className="btn-primary">Join the waiting list</Link>
+                  <Link href="/parents" className="btn-ghost">Meet the parents</Link>
+                </div>
+              </div>
+            </Reveal>
+          )}
+        </div>
+      </section>
+
+      {/* What's included with every puppy */}
+      <section className="bg-white py-24">
+        <div className="container-page">
+          <SectionHeading
+            eyebrow="Your Go-Home Pack"
+            title="What comes home with every puppy"
+            description="Each Ridgewood puppy leaves fully prepared for a healthy, happy start in their new home."
+          />
+          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {included.map((item, i) => (
+              <Reveal key={item.title} delayIndex={i} className="h-full">
+                <div className="flex h-full items-start gap-4 rounded-2xl border border-charcoal/10 bg-cream p-6">
+                  <span className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-chestnut/10 text-chestnut">
+                    <Check className="h-4 w-4" />
+                  </span>
+                  <div>
+                    <h3 className="font-serif text-lg text-ink">{item.title}</h3>
+                    <p className="mt-1 text-sm text-charcoal/70">{item.text}</p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery preview strip */}
+      {galleryPreview.length > 0 && (
+        <section className="bg-ink py-24">
+          <div className="container-page">
+            <div className="mb-12 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+              <div>
+                <span className="eyebrow mb-4">A Glimpse Of Ridgewood</span>
+                <h2 className="heading-serif mt-2 text-3xl text-cream sm:text-4xl">
+                  Life with our Cavaliers
+                </h2>
+              </div>
+              <Link href="/gallery" className="btn-outline shrink-0">
+                See the full gallery <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+              {galleryPreview.map((item, i) => (
+                <Reveal key={item.id} delayIndex={i}>
+                  <div className="group relative aspect-square overflow-hidden rounded-2xl">
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      sizes="(max-width: 640px) 50vw, 33vw"
+                    />
+                    <div className="absolute inset-0 flex items-end bg-gradient-to-t from-ink/70 to-transparent p-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                      <span className="text-sm text-cream">{item.title}</span>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Why a Cavalier */}
+      <section className="bg-white py-24">
+        <div className="container-page grid items-center gap-14 lg:grid-cols-2">
+          <Reveal className="order-2 lg:order-1">
+            <span className="eyebrow mb-4">Why A Cavalier</span>
+            <h2 className="heading-serif text-3xl text-ink sm:text-4xl">
+              The gentlest of companions
+            </h2>
+            <p className="mt-4 text-charcoal/75">
+              Affectionate, adaptable and endlessly loving, the Cavalier King Charles
+              Spaniel is as happy on a long walk as curled up on your lap. They make
+              wonderful family dogs and devoted companions.
+            </p>
+            <ul className="mt-6 space-y-4">
+              {breedTraits.map((t) => (
+                <li key={t.label} className="flex items-start gap-3">
+                  <span className="mt-1 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-chestnut/10 text-chestnut">
+                    <Check className="h-3.5 w-3.5" />
+                  </span>
+                  <span className="text-sm text-charcoal/80">
+                    <strong className="text-ink">{t.label}.</strong> {t.text}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+          <Reveal className="order-1 grid grid-cols-2 gap-4 lg:order-2">
+            <div className="relative row-span-2 aspect-[3/4] overflow-hidden rounded-3xl shadow-soft">
+              <Image src="/images/parent-duchess-black-tan.jpg" alt="Black & Tan Cavalier King Charles Spaniel" fill className="object-cover" sizes="(max-width: 1024px) 45vw, 25vw" />
+            </div>
+            <div className="relative aspect-square overflow-hidden rounded-3xl shadow-soft">
+              <Image src="/images/parent-rufus-ruby.jpg" alt="Ruby Cavalier King Charles Spaniel" fill className="object-cover" sizes="(max-width: 1024px) 45vw, 25vw" />
+            </div>
+            <div className="relative aspect-square overflow-hidden rounded-3xl shadow-soft">
+              <Image src="/images/parent-winston-tricolour.jpg" alt="Tricolour Cavalier King Charles Spaniel" fill className="object-cover" sizes="(max-width: 1024px) 45vw, 25vw" />
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* How adoption works */}
+      <section className="bg-cream py-24">
+        <div className="container-page">
+          <SectionHeading
+            eyebrow="Simple & Personal"
+            title="How adoption works"
+            description="Four gentle steps from first hello to welcoming your puppy home."
+          />
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {process.map((step, i) => (
+              <Reveal key={step.step} delayIndex={i} className="h-full">
+                <div className="relative h-full rounded-3xl border border-charcoal/10 bg-white p-7 shadow-soft transition hover:-translate-y-1 hover:shadow-lift">
+                  <span className="font-serif text-5xl text-caramel/40">{step.step}</span>
+                  <h3 className="mt-2 font-serif text-lg text-ink">{step.title}</h3>
+                  <p className="mt-2 text-sm text-charcoal/70">{step.text}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <div className="mt-12 text-center">
+            <Link href="/apply" className="btn-primary">Start your application <ArrowRight className="h-4 w-4" /></Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Your adoption journey — steps */}
+      <section className="bg-white py-24">
+        <div className="container-page">
+          <SectionHeading
+            eyebrow="Step By Step"
+            title="Your adoption journey"
+            description="From your first hello to the day your puppy comes home — here's exactly how it works."
+          />
+          <div className="relative mx-auto mt-14 max-w-2xl">
+            <div className="absolute left-6 top-2 bottom-2 w-px bg-caramel/30 sm:left-1/2" aria-hidden />
+            <div className="space-y-8">
+              {journey.map((step, i) => (
+                <Reveal key={step.step} delayIndex={i}>
+                  <div className={`relative flex items-start gap-5 sm:w-1/2 ${i % 2 === 1 ? "sm:ml-auto sm:flex-row" : "sm:flex-row-reverse sm:text-right"}`}>
+                    <span className="z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-chestnut font-serif text-lg text-cream shadow-soft">
+                      {step.step}
+                    </span>
+                    <div className="rounded-2xl border border-charcoal/10 bg-cream p-5 shadow-soft">
+                      <h3 className="font-serif text-lg text-ink">{step.title}</h3>
+                      <p className="mt-1 text-sm text-charcoal/70">{step.text}</p>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+          <div className="mt-12 text-center">
+            <Link href="/apply" className="btn-primary">Start your application <ArrowRight className="h-4 w-4" /></Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Our promise */}
+      <section className="bg-cream py-24">
+        <div className="container-page">
+          <SectionHeading
+            eyebrow="Our Promise"
+            title="What you can always count on"
+            description="A few things we promise every family who welcomes a Ridgewood Cavalier."
+          />
+          <div className="mt-14 grid gap-6 sm:grid-cols-3">
+            {promises.map((p, i) => (
+              <Reveal key={p.title} delayIndex={i} className="h-full">
+                <div className="card h-full p-7 text-center hover:-translate-y-1 hover:shadow-lift">
+                  <span className="mx-auto mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-chestnut/10 text-chestnut">
+                    <p.icon className="h-6 w-6" />
+                  </span>
+                  <h3 className="mb-2 font-serif text-xl text-ink">{p.title}</h3>
+                  <p className="text-sm leading-relaxed text-charcoal/70">{p.text}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Health & wellbeing */}
+      <section className="bg-white py-24">
+        <div className="container-page grid items-center gap-14 lg:grid-cols-2">
+          <Reveal className="relative mx-auto w-full max-w-md">
+            <div className="relative aspect-square overflow-hidden rounded-[2rem] shadow-lift">
+              <Image
+                src="/images/parent-winston-tricolour.jpg"
+                alt="A healthy tricolour Cavalier King Charles Spaniel"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 420px"
+              />
+            </div>
+          </Reveal>
+          <div>
+            <span className="eyebrow mb-4">Health First</span>
+            <h2 className="heading-serif text-3xl text-ink sm:text-4xl">
+              A healthy start, for a long life together
+            </h2>
+            <p className="mt-4 text-charcoal/75">
+              Health is at the heart of everything we do. We breed only from
+              health-screened parents and raise every puppy with careful veterinary
+              care, so your companion begins life sound, happy and well.
+            </p>
+            <ul className="mt-6 space-y-4">
+              {healthPoints.map((p) => (
+                <li key={p.title} className="flex items-start gap-3">
+                  <span className="mt-1 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-chestnut/10 text-chestnut">
+                    <Check className="h-3.5 w-3.5" />
+                  </span>
+                  <span className="text-sm text-charcoal/80">
+                    <strong className="text-ink">{p.title}.</strong> {p.text}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Colours */}
+      <section className="bg-ink py-24">
+        <div className="container-page">
+          <SectionHeading
+            light
+            eyebrow="The Four Classic Colours"
+            title={content.coloursTitle}
+            description={content.coloursDescription}
+          />
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {content.colours.map((colour, i) => (
+              <Reveal key={colour.name} delayIndex={i} className="h-full">
+                <div className="group relative h-full overflow-hidden rounded-3xl">
+                  <div className="relative aspect-[3/4]">
+                    <Image
+                      src={colour.image}
+                      alt={`${colour.name} Cavalier King Charles Spaniel`}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      sizes="(max-width: 640px) 100vw, 25vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent" />
+                  </div>
+                  <div className="absolute bottom-0 p-6 text-cream">
+                    <p className="inline-flex items-center gap-1.5 font-serif text-2xl">
+                      <PawPrint className="h-4 w-4 text-gold-soft" /> {colour.name}
+                    </p>
+                    <p className="mt-1 max-h-0 overflow-hidden text-sm text-cream/80 opacity-0 transition-all duration-500 group-hover:max-h-24 group-hover:opacity-100">
+                      {colour.desc}
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Reviews */}
+      <section className="bg-white py-24">
+        <div className="container-page">
+          <SectionHeading
+            eyebrow="Loved By Families"
+            title="Words from Ridgewood homes"
+            description="Real stories from the families who have welcomed a Ridgewood Cavalier — shared on Google, Facebook and TikTok."
+          />
+          <div className="mt-14 grid gap-7 md:grid-cols-2 lg:grid-cols-3">
+            {topReviews.map((review, i) => (
+              <Reveal key={review.id} delayIndex={i} className="h-full">
+                <ReviewCard review={review} />
+              </Reveal>
+            ))}
+          </div>
+          <div className="mt-12 text-center">
+            <Link href="/reviews" className="btn-ghost">
+              Read all reviews <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured testimonial */}
+      {featuredReview && (
+        <section className="bg-chestnut/95 py-20">
+          <div className="container-page flex max-w-3xl flex-col items-center text-center">
+            <Quote className="mb-6 h-10 w-10 text-gold-soft" />
+            <Reveal>
+              <p className="font-serif text-2xl leading-relaxed text-cream sm:text-3xl">
+                &ldquo;{featuredReview.text}&rdquo;
+              </p>
+              <p className="mt-6 text-sm font-semibold uppercase tracking-widest text-gold-soft">
+                {featuredReview.author}
+              </p>
+            </Reveal>
+          </div>
+        </section>
+      )}
+
+      {/* FAQ */}
+      <section className="bg-cream py-24">
+        <div className="container-page grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+          <SectionHeading align="left" eyebrow="Good To Know" title="Frequently asked questions" />
+          <div className="space-y-4">
+            {faqs.map((faq, i) => (
+              <Reveal key={faq.q} delayIndex={i}>
+                <details className="group rounded-2xl border border-charcoal/10 bg-white p-6">
+                  <summary className="flex cursor-pointer list-none items-center justify-between font-serif text-lg text-ink">
+                    {faq.q}
+                    <PawPrint className="h-5 w-5 text-caramel transition-transform group-open:rotate-45" />
+                  </summary>
+                  <p className="mt-3 text-sm leading-relaxed text-charcoal/70">{faq.a}</p>
+                </details>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Follow our journey — only shown once you add a social link in admin */}
+      {hasSocials && (
+        <section className="bg-white py-24">
+          <div className="container-page">
+            <SectionHeading
+              eyebrow="Stay Connected"
+              title="Follow our journey"
+              description="Watch our litters grow and see everyday life at Ridgewood."
+            />
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+              {settings.facebook && (
+                <a href={settings.facebook} target="_blank" rel="noopener noreferrer" className="btn-ghost">
+                  <Facebook className="h-4 w-4" /> Facebook
+                </a>
+              )}
+              {settings.instagram && (
+                <a href={settings.instagram} target="_blank" rel="noopener noreferrer" className="btn-ghost">
+                  <Instagram className="h-4 w-4" /> Instagram
+                </a>
+              )}
+              {settings.tiktok && (
+                <a href={settings.tiktok} target="_blank" rel="noopener noreferrer" className="btn-ghost">
+                  <TikTokIcon className="h-4 w-4" /> TikTok
+                </a>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Stay in touch / waiting list */}
+      <section className="bg-cream py-20">
+        <div className="container-page">
+          <div className="flex flex-col items-center gap-6 rounded-[2rem] border border-charcoal/10 bg-white p-10 text-center shadow-soft sm:p-14">
+            <span className="eyebrow">Waiting List</span>
+            <h2 className="heading-serif max-w-2xl text-3xl text-ink sm:text-4xl">
+              Be first to hear about our next litter
+            </h2>
+            <p className="max-w-xl text-charcoal/70">
+              Our puppies find homes quickly. Join the waiting list and we&apos;ll email
+              you the moment a new litter is announced.
+            </p>
+            <Link href="/apply" className="btn-primary">
+              Join the waiting list <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="relative overflow-hidden bg-chestnut py-20">
+        <div className="container-page flex flex-col items-center gap-6 text-center">
+          <h2 className="heading-serif max-w-3xl text-3xl text-cream sm:text-4xl lg:text-5xl">
+            {content.ctaTitle}
+          </h2>
+          <p className="max-w-xl text-cream/85">{content.ctaText}</p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link href="/apply" className="btn-gold">
+              Apply to Adopt
+            </Link>
+            <Link href="/our-nursery" className="btn-outline">
+              See our nursery
+            </Link>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
