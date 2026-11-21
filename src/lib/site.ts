@@ -32,7 +32,7 @@ export const site = {
 /** Owner-editable contact details. Overridden by the admin Settings tab. */
 export const defaultSettings: Settings = {
   email: "cavalierkingcharlesridgewood@gmail.com",
-  phone: "+1 (586) 244-9440",
+  phone: "",
   location: "",
   hours: "",
   reservationFee: 250,
